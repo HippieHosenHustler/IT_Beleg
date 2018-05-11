@@ -1,4 +1,4 @@
-<!-- This is the Blog's homepage. -->
+<!-- page to create new posts -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,15 +9,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="main.css">
-    <title>Blog von Tom und Edwin</title>
+    <title>Create New Post</title>
 </head>
 <body>
 
 <!-- Navbar at the top of the page -->
 <nav class="navbar navbar-inverse navbar-static-top">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">WebSiteName</a>
+            <a class="navbar-brand" href="#">New Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="#">Home</a></li>
@@ -36,47 +36,22 @@
     </div>
 </nav>
 
-
+<!-- input form to write new posts -->
 <div class="container">
-    <div class="jumbotron">
-        <h1>WELCOME TO OUR BLOG!</h1>
-        <p>Take a look around, we're sure you'll find something you'll like!</p>
+
+    <!-- title field -->
+    <div class="form-group">
+        <label for="title">Write a new blog post:</label>
+        <input type="text" class="form-control" id="title" placeholder="Title...">
     </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <h2>Look at our last three posts!<br><small>They are very good.</small></h2>
-            <ul>
-                <li>Entry 1</li>
-                <li>Entry 2</li>
-                <li>Entry 3</li>
-            </ul>
-        </div>
-        <div class="col-sm-4">
-            <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
-            <ul>
-                <li>Entry 1</li>
-                <li>Entry 2</li>
-                <li>Entry 3</li>
-                <li>Entry 4</li>
-                <li>Entry 5</li>
-                <li>Entry 6</li>
-                <li>Entry 7</li>
-                <li>Entry 8</li>
-                <li>Entry 9</li>
-                <li>Entry 10</li>
-            </ul>
-        </div>
+    <!-- text field -->
+    <div class="form-group">
+        <textarea class="form-control" id="content" rows="7" placeholder="Write something here..."></textarea>
     </div>
-</div>
 
-
-
-<div id="newest posts">
-
-</div>
-
-<div id="list of posts">
-
+    <!-- post and delete buttons -->
+    <button type="button" class="btn btn-default btn-md pull-right">Delete</button>
+    <button type="button" class="btn btn-primary btn-md pull-right">Post</button>
 </div>
 </body>
 </html>
