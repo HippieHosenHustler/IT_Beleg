@@ -8,8 +8,8 @@
 </head>
 <body>
 <div>
-    <a href="/index.html">Home</a>
-    <a href="/blog/index.html">Blog</a>
+    <a href="/index.php">Home</a>
+    <a href="/blog/index.php">Blog</a>
 
     <h1 class="title">Blog</h1>
 
