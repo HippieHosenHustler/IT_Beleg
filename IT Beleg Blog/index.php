@@ -46,25 +46,29 @@
     <div class="row">
         <div class="col-sm-8">
             <h2>Look at our last three posts!<br><small>They are very good.</small></h2>
-            <ul>
-                <li>Entry 1</li>
-                <li>Entry 2</li>
-                <li>Entry 3</li>
-            </ul>
+            <div id="post-excerpt-1">
+                Post 1
+            </div>
+            <div id="post-excerpt-2">
+                Post 2
+            </div>
+            <div id="post-excerpt-3">
+                Post 3
+            </div>
         </div>
         <div class="col-sm-4">
             <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
             <ul>
-                <li>Entry 1</li>
-                <li>Entry 2</li>
-                <li>Entry 3</li>
-                <li>Entry 4</li>
-                <li>Entry 5</li>
-                <li>Entry 6</li>
-                <li>Entry 7</li>
-                <li>Entry 8</li>
-                <li>Entry 9</li>
-                <li>Entry 10</li>
+                <li id="recent-post-link-1">Entry 1</li>
+                <li id="recent-post-link-2">Entry 2</li>
+                <li id="recent-post-link-3">Entry 3</li>
+                <li id="recent-post-link-4">Entry 4</li>
+                <li id="recent-post-link-5">Entry 5</li>
+                <li id="recent-post-link-6">Entry 6</li>
+                <li id="recent-post-link-7">Entry 7</li>
+                <li id="recent-post-link-8">Entry 8</li>
+                <li id="recent-post-link-9">Entry 9</li>
+                <li id="recent-post-link-10">Entry 10</li>
             </ul>
         </div>
     </div>
