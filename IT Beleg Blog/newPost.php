@@ -17,7 +17,6 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <script class="text/javascript" src="newPost.js"></script>
     <link rel="stylesheet" href="main.css">
     <title>Create New Post</title>
 </head>
