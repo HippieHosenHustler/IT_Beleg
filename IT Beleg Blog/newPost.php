@@ -30,7 +30,7 @@
             <a class="navbar-brand" href="#">New Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="/IT_Beleg/IT Beleg Blog/index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -54,6 +54,7 @@
 
     <div class="col-xs-12" style="height:20px;"></div>
 
+
     <button type="button" class="btn btn-primary btn-md pull-right" id="saveDelta">Save</button>
 </div>
 
@@ -68,27 +69,44 @@
         ['link', 'image']
     ];
 
-    var quill = new Quill('#editor', {
+    var editorOptions = {
         modules: {
             toolbar: toolbarOptions
         },
-
+        placeholder: 'Write something here...',
         theme: 'snow'
-    })
+    };
+
+    var quill = new Quill('#editor', editorOptions);
+
 
     $('#saveDelta').click(function () {
         window.delta = quill.getContents();
-        var JSONString = JSON.stringify(delta),
-            dateObj = new Date(),
-            year = dateObj.getFullYear(),
-            month = dateObj.getMonth() + 1,
-            day = dateObj.getDate(),
-            hour = dateObj.getHours(),
-            minute = dateObj.getMinutes(),
-            second = dateObj.getSeconds();
-        download(JSONString, year + '-' + month + '-' + day + ' ' + hour + '-' + minute + '-' + second + '.txt', 'plain')
-    })
+        var JSONString = JSON.stringify(delta);
+
+        $.ajax({
+            type: 'POST',
+            url: 'newPost.php',
+            data: {'quillContent': JSONString},
+            success: function (data) {
+                console.log('JSON object successfully transmitted as string!');
+            },
+            error: function (e) {
+                console.log(e.message);
+            }
+        });
+    });
+
 </script>
+
+
+<?php
+if (isset($_POST['quillContent'])) {
+    $obj = $_POST['quillContent'];
+    file_put_contents(date("Y-m-d H-i-s") . ".txt", $obj);
+}
+?>
+
 
 </body>
 </html>

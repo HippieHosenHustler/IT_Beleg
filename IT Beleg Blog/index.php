@@ -27,7 +27,7 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/IT_Beleg/IT Beleg Blog/newPost.html">New Post</a></li>
+                    <li><a href="newPost.php">New Post</a></li>
                     <li><a href="#">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
