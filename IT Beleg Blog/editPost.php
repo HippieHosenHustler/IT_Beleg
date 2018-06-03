@@ -17,7 +17,6 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="main.css">
     <title>Edit Post</title>
 </head>
 <body>
@@ -37,7 +36,6 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="#">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -51,34 +49,41 @@
     <div id="toolbar"></div>
     <div id="editor"></div>
 
+    <!-- separator -->
     <div class="col-xs-12" style="height:20px;"></div>
-
 
     <button type="button" class="btn btn-primary btn-md pull-right" id="saveDelta">Post</button>
 </div>
 
 
+<!-- hidden input element to load file via dialog and access content -->
 <input id="fileInput" accept='text/plain' type="file" name="name" style="display: none;"/>
 
 
 <script>
+    // prompt .txt-file selection dialog on load by triggering a click on the input element
     $('#selectPost').ready(function () {
         $('#fileInput').trigger('click');
 
+        // get content from selected file
         $('#fileInput').change(function (event) {
             var input = event.target;
 
+            // create FileReader to access content
             var reader = new FileReader();
             reader.onload = function () {
+                // convert String back to JSON to enable correct parsing to editor
                 var obj = JSON.parse(reader.result)
                 quill.setContents(obj);
-                console.log(reader.result.substring(0, 200));
             };
+            // execute reader for first and only first file in FileList
             reader.readAsText(input.files[0]);
         });
     });
 
 
+    // setting up quill editor
+    // define toolbar
     var toolbarOptions = [
         [{'font': []}],
         [{'header': [1, 2, 3, 4, 5, 6, false]}],
@@ -88,6 +93,7 @@
         ['link', 'image']
     ];
 
+    // define other options and set toolbar options
     var editorOptions = {
         modules: {
             toolbar: toolbarOptions
@@ -96,19 +102,24 @@
         theme: 'snow'
     };
 
+    // create editor with the according options from above
     var quill = new Quill('#editor', editorOptions);
 
 
+    // "Post"-Button click function
     $('#saveDelta').click(function () {
+        // get editor content and convert JSON to String
         window.delta = quill.getContents();
         var JSONString = JSON.stringify(delta);
 
+        // POST ContentString to php via AJAX
         $.ajax({
             type: 'POST',
             url: 'newPost.php',
             data: {'quillContent': JSONString},
             success: function (data) {
                 console.log('JSON object successfully transmitted as string!');
+                // redirect to home
                 window.location.replace("index.php");
             },
             error: function (e) {
@@ -120,6 +131,10 @@
 </script>
 
 
+<!-- php part
+ waits for post via ajax
+ writes content to file and names it according to current date and time
+ -->
 <?php
 if (isset($_POST['quillContent'])) {
     $obj = $_POST['quillContent'];

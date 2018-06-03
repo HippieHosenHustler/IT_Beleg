@@ -17,7 +17,6 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="main.css">
     <title>Create New Post</title>
 </head>
 <body>
@@ -36,7 +35,6 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">New Post</a></li>
                     <li><a href="editPost.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
@@ -51,14 +49,16 @@
     <div id="toolbar"></div>
     <div id="editor"></div>
 
+    <!-- separator -->
     <div class="col-xs-12" style="height:20px;"></div>
-
 
     <button type="button" class="btn btn-primary btn-md pull-right" id="saveDelta">Post</button>
 </div>
 
 
 <script>
+    // setting up quill editor
+    // define toolbar
     var toolbarOptions = [
         [{'font': []}],
         [{'header': [1, 2, 3, 4, 5, 6, false]}],
@@ -68,6 +68,7 @@
         ['link', 'image']
     ];
 
+    // define other options and set toolbar options
     var editorOptions = {
         modules: {
             toolbar: toolbarOptions
@@ -76,19 +77,24 @@
         theme: 'snow'
     };
 
+    // create editor with the according options from above
     var quill = new Quill('#editor', editorOptions);
 
 
+    // "Post"-Button click function
     $('#saveDelta').click(function () {
+        // get editor content and convert JSON to String
         window.delta = quill.getContents();
         var JSONString = JSON.stringify(delta);
 
+        // POST ContentString to php via AJAX
         $.ajax({
             type: 'POST',
             url: 'newPost.php',
             data: {'quillContent': JSONString},
             success: function (data) {
                 console.log('JSON object successfully transmitted as string!');
+                // redirect to home
                 window.location.replace("index.php");
             },
             error: function (e) {
@@ -100,6 +106,10 @@
 </script>
 
 
+<!-- php part
+ waits for post via ajax
+ writes content to file and names it according to current date and time
+ -->
 <?php
 if (isset($_POST['quillContent'])) {
     $obj = $_POST['quillContent'];
