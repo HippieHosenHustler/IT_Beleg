@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="main.css">
     <title>Blog von Tom und Edwin</title>
 </head>
 <body>
@@ -19,16 +18,13 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">WebSiteName</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li><a href="#">Home</a></li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/IT_Beleg/IT Beleg Blog/newPost.html">New Post</a></li>
-                    <li><a href="#">Edit Post</a></li>
+                    <li><a href="newPost.php">New Post</a></li>
+                    <li><a href="editPost.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
