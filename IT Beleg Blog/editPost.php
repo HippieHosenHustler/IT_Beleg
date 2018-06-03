@@ -1,4 +1,4 @@
-<!-- page to create new posts -->
+<!-- page to edit posts -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +18,7 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
     <link rel="stylesheet" href="main.css">
-    <title>Create New Post</title>
+    <title>Edit Post</title>
 </head>
 <body>
 
@@ -26,7 +26,7 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">New Blog Post</a>
+            <a class="navbar-brand" href="#">Edit Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -36,8 +36,8 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">New Post</a></li>
-                    <li><a href="editPost.php">Edit Post</a></li>
+                    <li><a href="newPost.php">New Post</a></li>
+                    <li><a href="#">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -58,7 +58,27 @@
 </div>
 
 
+<input id="fileInput" accept='text/plain' type="file" name="name" style="display: none;"/>
+
+
 <script>
+    $('#selectPost').ready(function () {
+        $('#fileInput').trigger('click');
+
+        $('#fileInput').change(function (event) {
+            var input = event.target;
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                var obj = JSON.parse(reader.result)
+                quill.setContents(obj);
+                console.log(reader.result.substring(0, 200));
+            };
+            reader.readAsText(input.files[0]);
+        });
+    });
+
+
     var toolbarOptions = [
         [{'font': []}],
         [{'header': [1, 2, 3, 4, 5, 6, false]}],
