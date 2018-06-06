@@ -7,29 +7,32 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="main.css">
+
+    <!-- Quill -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
     <title>Blog von Tom und Edwin</title>
 </head>
 <body>
 
 <!-- Navbar at the top of the page -->
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">WebSiteName</a>
+            <a class="navbar-brand" href="index.php">Home</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li><a href="#">Home</a></li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">New Post</a></li>
-                    <li><a href="#">Edit Post</a></li>
+                    <li><a href="newPost.php">New Post</a></li>
+                    <li><a href="editPost.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -45,16 +48,12 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <h2>Look at our last three posts!<br><small>They are very good.</small></h2>
-            <div id="post-excerpt-1">
-                Post 1
-            </div>
-            <div id="post-excerpt-2">
-                Post 2
-            </div>
-            <div id="post-excerpt-3">
-                Post 3
-            </div>
+            <h2>Look at our three latest posts!<br><small>They are very good.</small></h2>
+
+                <div id="long_post_0" class="longPost"></div>
+                <div id="long_post_1" class="longPost"></div>
+                <div id="long_post_2" class="longPost"></div>
+
         </div>
         <div class="col-sm-4">
             <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
@@ -83,5 +82,43 @@
 <div id="list of posts">
 
 </div>
+
+<!-- Fills the three latest posts -->
+<script>
+    let editorOptions = {
+      theme: 'bubble',
+      readOnly: true,
+      modules: {
+          toolbar: false
+      }
+    };
+
+
+    for (let i = 0; i < 3; i++) {
+        loadDoc(i);
+    }
+
+    function loadDoc(postNumber) {
+        let xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let jsonObject = JSON.parse(this.responseText);
+                document.getElementById("long_post_" + postNumber).innerHTML = jsonObject.toString();
+                let quill = new Quill('#long_post_' + postNumber, editorOptions);
+                quill.setContents(jsonObject);
+
+                let contentLength = quill.getLength();
+                quill.deleteText(500, contentLength - 500);
+                quill.insertText(quill.getLength() - 1, "...");
+
+            }
+        };
+        xhttp.open("GET", "get-post-data.php?q=" + postNumber, true);
+        xhttp.send();
+    }
+
+</script>
+
 </body>
 </html>
