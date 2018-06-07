@@ -1,10 +1,9 @@
-<!-- This is the Blog's homepage. -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,15 +14,15 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <title>Blog von Tom und Edwin</title>
+    <title id="pageTitle">Blog von Tom und Edwin</title>
+
 </head>
 <body>
-
 <!-- Navbar at the top of the page -->
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.php">Home</a>
+            <a class="navbar-brand" href="index.php">HOME</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -39,21 +38,19 @@
     </div>
 </nav>
 
-
 <div class="container">
     <div class="jumbotron">
-        <h1>WELCOME TO OUR BLOG!</h1>
-        <p>Take a look around, we're sure you'll find something you'll like!</p>
+        <h1 id="pageTitle"></h1>
     </div>
+    <!-- Actual Post -->
     <div class="row">
         <div class="col-sm-8">
-            <h2>Look at our three latest posts!<br><small>They are very good.</small></h2>
-
-            <div id="long_post_0" class="longPost"></div>
-            <div id="long_post_1" class="longPost"></div>
-            <div id="long_post_2" class="longPost"></div>
+            <div id="post">
+            </div>
 
         </div>
+
+        <!-- Latest 10 Posts -->
         <div class="col-sm-4">
             <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
 
@@ -76,47 +73,37 @@
             <a id="recent-post-link-8" href="#"></a>
             <br>
             <a id="recent-post-link-9" href="#"></a>
-
         </div>
     </div>
 </div>
 <!-- Fills the list of ten latest posts -->
-<script src="fillLatestPostLinks.js"></script>
+<script src="fillLatestPostLinks.js">
+</script>
+<!--script>
+    document.getElementById("post").innerHTML = localStorage.getItem("fileName");
+</script-->
 
-<!-- Fills the three latest posts -->
-<!-- TODO click to go to reader -->
+<!-- Displays the blog post -->
 <script>
     let editorOptions = {
-      theme: 'bubble',
-      readOnly: true,
-      modules: {
-          toolbar: false
-      }
+        theme: 'bubble',
+        readOnly: true,
+        modules: {
+            toolbar: false
+        }
     };
+    let fileName = "" + localStorage.getItem("fileName");
 
-    for (let i = 0; i < 3; i++) {
-        loadDoc(i);
-    }
-
-    function loadDoc(postNumber) {
-        let xhttp;
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let jsonObject = JSON.parse(this.responseText);
-                let quill = new Quill('#long_post_' + postNumber, editorOptions);
-                quill.setContents(jsonObject);
-
-                let contentLength = quill.getLength();
-                quill.deleteText(500, contentLength - 500);
-                quill.insertText(quill.getLength() - 1, "...");
-
-            }
-        };
-        xhttp.open("GET", "get-post-data.php?q=" + postNumber, true);
-        xhttp.send();
-    }
-
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+          let jsonObject = JSON.parse(this.responseText);
+          let quill = new Quill('#post', editorOptions);
+          quill.setContents(jsonObject);
+        }
+    };
+    xmlhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
+    xmlhttp.send();
 </script>
 
 

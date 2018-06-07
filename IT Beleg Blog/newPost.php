@@ -59,7 +59,7 @@
 <script>
     // setting up quill editor
     // define toolbar
-    var toolbarOptions = [
+    let toolbarOptions = [
         [{'font': []}],
         [{'header': [1, 2, 3, 4, 5, 6, false]}],
         ['bold', 'italic', 'underline', 'strike'],
@@ -69,7 +69,7 @@
     ];
 
     // define other options and set toolbar options
-    var editorOptions = {
+    let editorOptions = {
         modules: {
             toolbar: toolbarOptions
         },
@@ -78,14 +78,14 @@
     };
 
     // create editor with the according options from above
-    var quill = new Quill('#editor', editorOptions);
-
+    let quill = new Quill('#editor', editorOptions);
 
     // "Post"-Button click function
     $('#saveDelta').click(function () {
         // get editor content and convert JSON to String
         window.delta = quill.getContents();
-        var JSONString = JSON.stringify(delta);
+
+        let JSONString = JSON.stringify(delta);
 
         // POST ContentString to php via AJAX
         $.ajax({
