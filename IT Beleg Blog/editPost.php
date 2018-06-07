@@ -80,12 +80,24 @@ if ($id > 0) {
     echo '<h2>Posts available for editing:</h2>';
     $i = 0;
     foreach ($files as $post) {
+        $file = fopen($post, 'r');
+        $json = fread($file, filesize($post));
+        $json = json_decode($json);
+
+
+        // TODO: get title from json to display on button
+
+        // $buttonName = $json->attribute->header;
+        // echo '<script>console.log(' . $buttonName . ');</script>';
         echo '<button type="button" class="btn btn-default btn-block" onclick="fileClick(this.id)" id="' . $post . '">' . $post . '</button>';
+        fclose($file);
         $i++;
     }
     echo '</div>';
 } else {
-    echo "No Posts found!";
+    echo '<div class="container">';
+    echo '<h2>No Posts available!</h2>';
+    echo '</div>';
 }
 
 if (isset($_POST['quillContent'])) {
@@ -95,6 +107,9 @@ if (isset($_POST['quillContent'])) {
 ?>
 
 <script>
+
+    // TODO: delete this when done
+
     // prompt .txt-file selection dialog on load by triggering a click on the input element
     $('#selectPost').ready(function () {
         $('#fileInput').trigger('click');
@@ -117,32 +132,19 @@ if (isset($_POST['quillContent'])) {
 
 
     function fileClick(file) {
-        console.log(file);
-
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+
+
+                // TODO: rebuild page after selecting the file and before loading its content into quill
+
                 var obj = JSON.parse(xhttp.responseText);
                 quill.setContents(obj);
             }
         };
         xhttp.open("GET", file, true);
         xhttp.send();
-
-
-        /*
-        $.ajax({
-            type: 'POST',
-            url: 'editPost.php',
-            data: {'buttonId': id},
-            success: function () {
-                console.log('Transmitted button ID: ' + id);
-            }
-            error: function (e) {
-                console.log(e);
-            }
-        });
-        */
     }
 
 
