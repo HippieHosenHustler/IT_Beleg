@@ -50,37 +50,36 @@
         <div class="col-sm-8">
             <h2>Look at our three latest posts!<br><small>They are very good.</small></h2>
 
-                <div id="long_post_0" class="longPost"></div>
-                <div id="long_post_1" class="longPost"></div>
-                <div id="long_post_2" class="longPost"></div>
+            <div id="long_post_0" class="longPost"></div>
+            <div id="long_post_1" class="longPost"></div>
+            <div id="long_post_2" class="longPost"></div>
 
         </div>
         <div class="col-sm-4">
             <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
-            <ul>
-                <li id="recent-post-link-1">Entry 1</li>
-                <li id="recent-post-link-2">Entry 2</li>
-                <li id="recent-post-link-3">Entry 3</li>
-                <li id="recent-post-link-4">Entry 4</li>
-                <li id="recent-post-link-5">Entry 5</li>
-                <li id="recent-post-link-6">Entry 6</li>
-                <li id="recent-post-link-7">Entry 7</li>
-                <li id="recent-post-link-8">Entry 8</li>
-                <li id="recent-post-link-9">Entry 9</li>
-                <li id="recent-post-link-10">Entry 10</li>
-            </ul>
+
+            <a id="recent-post-link-0" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-1" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-2" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-3" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-4" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-5" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-6" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-7" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-8" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <br>
+            <a id="recent-post-link-9" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+
         </div>
     </div>
-</div>
-
-
-
-<div id="newest posts">
-
-</div>
-
-<div id="list of posts">
-
 </div>
 
 <!-- Fills the three latest posts -->
@@ -104,7 +103,6 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let jsonObject = JSON.parse(this.responseText);
-                document.getElementById("long_post_" + postNumber).innerHTML = jsonObject.toString();
                 let quill = new Quill('#long_post_' + postNumber, editorOptions);
                 quill.setContents(jsonObject);
 
@@ -120,5 +118,27 @@
 
 </script>
 
+<!-- Fills the list of ten latest posts -->
+<script>
+    let xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let fileNameArray = JSON.parse(this.responseText);
+
+            for (let i = 0; i < 10; i++) {
+                if (fileNameArray[i].toString() !== "undefined") {
+                    document.getElementById("recent-post-link-" + i).innerHTML = fileNameArray[i];
+                }
+            }
+        }
+    };
+    xhttp.open("GET", "getLatestPosts.php", true);
+    xhttp.send();
+
+    function saveFileNameToLocalStorage(filename) {
+        localStorage.setItem("fileName", filename);
+    }
+</script>
 </body>
 </html>
