@@ -60,7 +60,56 @@
 <input id="fileInput" accept='text/plain' type="file" name="name" style="display: none;"/>
 
 
+<!-- php part
+ waits for post via ajax
+ writes content to file and names it according to current date and time
+ -->
+<?php
+$dir = 'Posts/';
+
+if (!is_dir($dir)) {
+    // dir doesn't exist, make it
+    mkdir($dir);
+}
+
+$files = glob($dir . 'P_*.txt');
+$id = count($files);
+
+if ($id > 0) {
+    echo '<div class="container">';
+    echo '<h2>Posts available for editing:</h2>';
+    $i = 0;
+    foreach ($files as $post) {
+        $file = fopen($post, 'r');
+        $json = fread($file, filesize($post));
+        $json = json_decode($json);
+
+
+        // TODO: get title from json to display on button
+
+        // $buttonName = $json->attribute->header;
+        // echo '<script>console.log(' . $buttonName . ');</script>';
+        echo '<button type="button" class="btn btn-default btn-block" onclick="fileClick(this.id)" id="' . $post . '">' . $post . '</button>';
+        fclose($file);
+        $i++;
+    }
+    echo '</div>';
+} else {
+    echo '<div class="container">';
+    echo '<h2>No Posts available!</h2>';
+    echo '</div>';
+}
+
+if (isset($_POST['quillContent'])) {
+    $obj = $_POST['quillContent'];
+    file_put_contents($dir . 'P_' . $id . '.txt', $obj);
+}
+?>
+
 <script>
+
+    // TODO: delete this when done
+
     // prompt .txt-file selection dialog on load by triggering a click on the input element
     $('#selectPost').ready(function () {
         $('#fileInput').trigger('click');
@@ -78,6 +127,46 @@
             };
             // execute reader for first and only first file in FileList
             reader.readAsText(input.files[0]);
+        });
+    });
+
+
+    function fileClick(file) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+
+                // TODO: rebuild page after selecting the file and before loading its content into quill
+
+                var obj = JSON.parse(xhttp.responseText);
+                quill.setContents(obj);
+            }
+        };
+        xhttp.open("GET", file, true);
+        xhttp.send();
+    }
+
+
+    // "Post"-Button click function
+    $('#saveDelta').click(function () {
+        // get editor content and convert JSON to String
+        window.delta = quill.getContents();
+        var JSONString = JSON.stringify(delta);
+
+        // POST ContentString to php via ajax
+        $.ajax({
+            type: 'POST',
+            url: 'editPost.php',
+            data: {'quillContent': JSONString},
+            success: function () {
+                console.log('JSON object successfully transmitted as string!');
+                // redirect to home
+                window.location.replace("index.php");
+            },
+            error: function (e) {
+                console.log(e.message);
+            }
         });
     });
 
@@ -104,44 +193,6 @@
 
     // create editor with the according options from above
     var quill = new Quill('#editor', editorOptions);
-
-
-    // "Post"-Button click function
-    $('#saveDelta').click(function () {
-        // get editor content and convert JSON to String
-        window.delta = quill.getContents();
-        var JSONString = JSON.stringify(delta);
-
-        // POST ContentString to php via AJAX
-        $.ajax({
-            type: 'POST',
-            url: 'newPost.php',
-            data: {'quillContent': JSONString},
-            success: function (data) {
-                console.log('JSON object successfully transmitted as string!');
-                // redirect to home
-                window.location.replace("index.php");
-            },
-            error: function (e) {
-                console.log(e.message);
-            }
-        });
-    });
-
 </script>
-
-
-<!-- php part
- waits for post via ajax
- writes content to file and names it according to current date and time
- -->
-<?php
-if (isset($_POST['quillContent'])) {
-    $obj = $_POST['quillContent'];
-    file_put_contents(date("Y-m-d H-i-s") . ".txt", $obj);
-}
-?>
-
-
 </body>
 </html>

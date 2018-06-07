@@ -92,7 +92,7 @@
             type: 'POST',
             url: 'newPost.php',
             data: {'quillContent': JSONString},
-            success: function (data) {
+            success: function () {
                 console.log('JSON object successfully transmitted as string!');
                 // redirect to home
                 window.location.replace("index.php");
@@ -102,7 +102,6 @@
             }
         });
     });
-
 </script>
 
 
@@ -111,9 +110,18 @@
  writes content to file and names it according to current date and time
  -->
 <?php
+$dir = 'Posts/';
+
+if (!is_dir($dir)) {
+    // dir doesn't exist, make it
+    mkdir($dir);
+}
+
+$id = count(glob($dir . 'P_*.txt'));
+
 if (isset($_POST['quillContent'])) {
     $obj = $_POST['quillContent'];
-    file_put_contents(date("Y-m-d H-i-s") . ".txt", $obj);
+    file_put_contents($dir . 'P_' . $id . '.txt', $obj);
 }
 ?>
 
