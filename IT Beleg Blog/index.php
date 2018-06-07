@@ -58,31 +58,34 @@
         <div class="col-sm-4">
             <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
 
-            <a id="recent-post-link-0" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-0" href="#"></a>
             <br>
-            <a id="recent-post-link-1" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-1" href="#"></a>
             <br>
-            <a id="recent-post-link-2" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-2" href="#"></a>
             <br>
-            <a id="recent-post-link-3" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-3" href="#"></a>
             <br>
-            <a id="recent-post-link-4" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-4" href="#"></a>
             <br>
-            <a id="recent-post-link-5" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-5" href="#"></a>
             <br>
-            <a id="recent-post-link-6" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-6" href="#"></a>
             <br>
-            <a id="recent-post-link-7" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-7" href="#"></a>
             <br>
-            <a id="recent-post-link-8" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-8" href="#"></a>
             <br>
-            <a id="recent-post-link-9" href="readPost.php" onclick="saveFileNameToLocalStorage(this.innerHTML)"></a>
+            <a id="recent-post-link-9" href="#"></a>
 
         </div>
     </div>
 </div>
+<!-- Fills the list of ten latest posts -->
+<script src="fillLatestPostLinks.js"></script>
 
 <!-- Fills the three latest posts -->
+<!-- TODO click to go to reader -->
 <script>
     let editorOptions = {
       theme: 'bubble',
@@ -91,7 +94,6 @@
           toolbar: false
       }
     };
-
 
     for (let i = 0; i < 3; i++) {
         loadDoc(i);
@@ -118,27 +120,6 @@
 
 </script>
 
-<!-- Fills the list of ten latest posts -->
-<script>
-    let xhttp;
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            let fileNameArray = JSON.parse(this.responseText);
 
-            for (let i = 0; i < 10; i++) {
-                if (fileNameArray[i].toString() !== "undefined") {
-                    document.getElementById("recent-post-link-" + i).innerHTML = fileNameArray[i];
-                }
-            }
-        }
-    };
-    xhttp.open("GET", "getLatestPosts.php", true);
-    xhttp.send();
-
-    function saveFileNameToLocalStorage(filename) {
-        localStorage.setItem("fileName", filename);
-    }
-</script>
 </body>
 </html>
