@@ -30,7 +30,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="editPost.php">Edit Post</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -59,7 +59,7 @@
                     let responseTextJson = JSON.parse(this.responseText);
 
                     document.getElementById("post-title").innerHTML = responseTextJson.post.title;
-                    document.getElementById("post-content").innerHTML = responseTextJson.post.Content;
+                    document.getElementById("post-content").innerHTML = responseTextJson.post.content;
                 }
             };
             xhttp.open("GET", "get-reader-data.php?q=" + fileName, true);

@@ -31,7 +31,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="editPost.php">Edit Post</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -61,14 +61,14 @@
                 <br>
                 <p id="preview-text-1"></p>
                 <br>
-                <a id="preview-link-0">read more</a>
+                <a id="preview-link-1">read more</a>
             </div>
             <div class="longPost">
                 <h2 id="preview-title-2"></h2>
                 <br>
                 <p id="preview-text-2"></p>
                 <br>
-                <a id="preview-link-0">read more</a>
+                <a id="preview-link-2">read more</a>
             </div>
 
             <!-- Fills the three latest posts -->

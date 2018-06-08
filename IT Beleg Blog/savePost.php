@@ -1,5 +1,3 @@
-<!-- page to edit posts -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,15 +15,14 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <title>Edit Post</title>
+    <title>Post saved.</title>
 </head>
 <body>
-
 <!-- Navbar at the top of the page -->
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="postList.php">Edit Blog Post</a>
+            <a class="navbar-brand" href="#">New Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -35,40 +32,31 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="newPost.php">New Post</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 </nav>
-
 <div class="container">
-    <form action="updatePost.php" method="post">
-        Titel: <textarea id="title" type="text" name="title"></textarea><br>
-        Inhalt: <textarea id="content" name="content" ></textarea><br>
-        <input type="hidden" id="dateTime" name="dateOfCreation">
-        <input type="hidden" id="fileName" name="fileName">
-        <input type="submit" value="Save">
-    </form>
+    <?php
+    $title = $_POST["title"];
+    $content = $_POST["content"];
+    $dateOfCreation = $_POST["dateOfCreation"];
+
+    $array = array(
+        "dateOfCreation" => $dateOfCreation,
+        "title" => $title,
+        "content" => $content
+    );
+    $jsonFileContent = json_encode($array);
+
+    $postId = count(glob("./Posts/P_*.json"));
+
+    file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+
+    echo "Post saved!"
+    ?>
 </div>
-
-<script>
-    let fileName = localStorage.getItem("fileName");
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            let jsonObject = JSON.parse(this.responseText);
-
-            document.getElementById("title").innerHTML = jsonObject.post.title;
-            document.getElementById("content").innerHTML = jsonObject.post.content;
-            document.getElementById("dateTime").value = jsonObject.post.dateOfCreation;
-            document.getElementById("fileName").value = fileName;
-        }
-    };
-    xmlhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
-    xmlhttp.send();
-</script>
-
 </body>
-</html>

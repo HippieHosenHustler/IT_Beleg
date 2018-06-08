@@ -7,7 +7,7 @@ xhttp.onreadystatechange = function () {
 
             document.getElementById("preview-title-" + i).innerHTML = responseTextJson.post[i].title;
 
-            let postPreview = responseTextJson.post[i].Content.slice(0,500);
+            let postPreview = responseTextJson.post[i].content.slice(0,500);
             postPreview += "...";
             document.getElementById("preview-text-" + i).innerHTML = postPreview;
 
