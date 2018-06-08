@@ -3,18 +3,10 @@ $files = glob("./Posts/P_*.json");
 
 $jsonArray = array();
 
-/**
-for ($i = 0; $i < count($files); $i++) {
-    $fileContent = fread(fopen($files[$i], "r"), filesize($files[$i]));
-    $jsonContent = json_decode($fileContent, true);
-    $jsonContent["file"] = $files[$i];
-}
-**/
-
 foreach ($files as $file){
     $fileContent = fread(fopen($file, "r"), filesize($file));
     $jsonContent = json_decode($fileContent, true);
-    $jsonContent["file"] = $file;
+    $jsonContent["fileName"] = $file;
 
     array_push($jsonArray, $jsonContent);
 }
