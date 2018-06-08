@@ -1,21 +1,18 @@
-let xhttp;
-xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function () {
+let xmlhttp;
+xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
-        let fileNameArray = JSON.parse(this.responseText);
-
+        let responseTextJson = JSON.parse(this.responseText);
         for (let i = 0; i < 10; i++) {
-            if ("" + fileNameArray[i] !== "undefined") {
-                let link = document.getElementById("recent-post-link-" + i);
-                //TODO title
-                link.innerHTML = fileNameArray[i];
-                link.href="readPost.php";
-                link.onclick = function () {
-                    localStorage.setItem("fileName", fileNameArray[1]);
-                };
-            }
+
+            let fileName = responseTextJson.post[i].fileName;
+            document.getElementById("recent-post-link-" + i).innerHTML = responseTextJson.post[i].title;
+            document.getElementById("recent-post-link-" + i).onclick = function () {
+                localStorage.setItem("fileName", fileName);
+            };
+            document.getElementById("recent-post-link-" + i).href = "readPost.php"
         }
     }
 };
-xhttp.open("GET", "getLatestPosts.php", true);
-xhttp.send();
+xmlhttp.open("GET", "getRecentPosts.php", true);
+xmlhttp.send();
