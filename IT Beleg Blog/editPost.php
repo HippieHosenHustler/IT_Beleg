@@ -36,7 +36,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="#">Upload Picture</a></li>
+                    <li><a href="uploadPicture.php">Upload Picture</a></li>
                 </ul>
             </li>
         </ul>
@@ -54,10 +54,6 @@
 
     <button type="button" class="btn btn-primary btn-md pull-right" id="saveDelta">Post</button>
 </div>
-
-
-<!-- hidden input element to load file via dialog and access content -->
-<input id="fileInput" accept='text/plain' type="file" name="name" style="display: none;"/>
 
 
 <!-- php part
@@ -107,73 +103,52 @@ if (isset($_POST['quillContent'])) {
 ?>
 
 <script>
-
-    // TODO: delete this when done
-
-    // prompt .txt-file selection dialog on load by triggering a click on the input element
-    $('#selectPost').ready(function () {
-        $('#fileInput').trigger('click');
-
-        // get content from selected file
-        $('#fileInput').change(function (event) {
-            var input = event.target;
-
-            // create FileReader to access content
-            var reader = new FileReader();
-            reader.onload = function () {
-                // convert String back to JSON to enable correct parsing to editor
-                var obj = JSON.parse(reader.result)
-                quill.setContents(obj);
-            };
-            // execute reader for first and only first file in FileList
-            reader.readAsText(input.files[0]);
-        });
-    });
-
-
     function fileClick(file) {
-        var xhttp = new XMLHttpRequest();
+        let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-
-
-                // TODO: rebuild page after selecting the file and before loading its content into quill
-
-                var obj = JSON.parse(xhttp.responseText);
+                let obj = JSON.parse(xhttp.responseText);
                 quill.setContents(obj);
+                $('#saveDelta').prop('disabled', false);
             }
         };
-        xhttp.open("GET", file, true);
+        xhttp.open('GET', file, true);
         xhttp.send();
     }
 
 
+    $('#saveDelta').ready(function (){
+        $('#saveDelta').prop('disabled', true);
+    });
+
     // "Post"-Button click function
     $('#saveDelta').click(function () {
-        // get editor content and convert JSON to String
-        window.delta = quill.getContents();
-        var JSONString = JSON.stringify(delta);
+        if ($("#saveDelta").is(":enabled")) {
+            // get editor content and convert JSON to String
+            window.delta = quill.getContents();
+            let JSONString = JSON.stringify(delta);
 
-        // POST ContentString to php via ajax
-        $.ajax({
-            type: 'POST',
-            url: 'editPost.php',
-            data: {'quillContent': JSONString},
-            success: function () {
-                console.log('JSON object successfully transmitted as string!');
-                // redirect to home
-                window.location.replace("index.php");
-            },
-            error: function (e) {
-                console.log(e.message);
-            }
-        });
+            // POST ContentString to php via ajax
+            $.ajax({
+                type: 'POST',
+                url: 'editPost.php',
+                data: {'quillContent': JSONString},
+                success: function () {
+                    console.log('JSON object successfully transmitted as string!');
+                    // redirect to home
+                    window.location.replace("index.php");
+                },
+                error: function (e) {
+                    console.log(e.message);
+                }
+            });
+        }
     });
 
 
     // setting up quill editor
     // define toolbar
-    var toolbarOptions = [
+    let toolbarOptions = [
         [{'font': []}],
         [{'header': [1, 2, 3, 4, 5, 6, false]}],
         ['bold', 'italic', 'underline', 'strike'],
@@ -183,7 +158,7 @@ if (isset($_POST['quillContent'])) {
     ];
 
     // define other options and set toolbar options
-    var editorOptions = {
+    let editorOptions = {
         modules: {
             toolbar: toolbarOptions
         },
@@ -192,7 +167,7 @@ if (isset($_POST['quillContent'])) {
     };
 
     // create editor with the according options from above
-    var quill = new Quill('#editor', editorOptions);
+    let quill = new Quill('#editor', editorOptions);
 </script>
 </body>
 </html>
