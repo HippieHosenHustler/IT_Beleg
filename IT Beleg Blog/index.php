@@ -84,8 +84,8 @@
 <script src="fillLatestPostLinks.js"></script>
 
 <!-- Fills the three latest posts -->
-<!-- TODO click to go to reader -->
 <script>
+    //TODO posts are jsom
     let editorOptions = {
       theme: 'bubble',
       readOnly: true,

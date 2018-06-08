@@ -1,4 +1,5 @@
 <?php
+// TODO posts are json
 $q = $_REQUEST["q"];
 
 $file = fopen($q, "r") or die("Unable to open file!");

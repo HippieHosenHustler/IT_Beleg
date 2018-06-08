@@ -79,12 +79,10 @@
 <!-- Fills the list of ten latest posts -->
 <script src="fillLatestPostLinks.js">
 </script>
-<!--script>
-    document.getElementById("post").innerHTML = localStorage.getItem("fileName");
-</script-->
 
 <!-- Displays the blog post -->
 <script>
+    //TODO posts are json
     let editorOptions = {
         theme: 'bubble',
         readOnly: true,

@@ -85,7 +85,6 @@ if ($id > 0) {
         $json = json_decode($json);
 
 
-        // TODO: get title from json to display on button
 
         // $buttonName = $json->attribute->header;
         // echo '<script>console.log(' . $buttonName . ');</script>';
@@ -108,7 +107,6 @@ if (isset($_POST['quillContent'])) {
 
 <script>
 
-    // TODO: delete this when done
 
     // prompt .txt-file selection dialog on load by triggering a click on the input element
     $('#selectPost').ready(function () {
@@ -137,7 +135,6 @@ if (isset($_POST['quillContent'])) {
             if (this.readyState == 4 && this.status == 200) {
 
 
-                // TODO: rebuild page after selecting the file and before loading its content into quill
 
                 var obj = JSON.parse(xhttp.responseText);
                 quill.setContents(obj);
