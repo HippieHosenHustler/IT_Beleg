@@ -1,5 +1,3 @@
-<!-- page to create new posts -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +15,9 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <title>Create New Post</title>
+    <title>Post saved.</title>
 </head>
 <body>
-
 <!-- Navbar at the top of the page -->
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
@@ -42,20 +39,24 @@
         </ul>
     </div>
 </nav>
-
-
-<!-- input form to write new posts -->
 <div class="container">
+    <?php
+    $title = $_POST["title"];
+    $content = $_POST["content"];
+    $dateOfCreation = date("Y-m-d h:i:sa", time());
 
-    <form action="savePost.php" method="post">
-        Titel: <input type="text" name="title"/><br>
-        Inhalt: <textarea name="content" ></textarea><br>
-        <input type="submit" value="Save">
-    </form>
+    $array = array(
+        "dateOfCreation" => $dateOfCreation,
+        "title" => $title,
+        "content" => $content
+    );
+    $jsonFileContent = json_encode($array);
 
-    <!-- separator -->
-    <div class="col-xs-12" style="height:20px;"></div>
+    $postId = count(glob("./Posts/P_*.json"));
 
+    file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+
+    echo "Post saved!"
+    ?>
 </div>
 </body>
-</html>
