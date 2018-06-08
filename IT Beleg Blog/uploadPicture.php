@@ -17,7 +17,7 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <title>Edit Post</title>
+    <title>Upload Picture</title>
 </head>
 <body>
 
@@ -45,15 +45,20 @@
 
 
 <div class="container">
-    <input type="file" id="imgInput" accept="image/*" style="display: none;">
-    <img id="imgPreview" src="#" alt=""
-         style="display: block; margin-left: auto; margin-right: auto; width: 100%; max-width: 400px;"/>
+    <form id="imgForm" action="" method="post" enctype="multipart/form-data">
+        <div id="image_preview">
+            <img id="imgPreview" src="#" alt=""
+                 style="display: block; margin-left: auto; margin-right: auto; width: 100%; max-width: 400px;"/>
+        </div>
 
-    <!-- separator -->
-    <div class="col-xs-12" style="height:20px;"></div>
+        <div class="col-xs-12" style="height:20px;"></div>
 
-    <button type="button" class="btn btn-default btn-block" id="btnSelect">Select</button>
-    <button type="button" class="btn btn-primary btn-block" id="btnUpload">Upload</button>
+        <div id="selectImage">
+            <input type="file" id="imgInput" name="img" accept="image/*" style="display: none;">
+            <button type="button" class="btn btn-default btn-block" id="btnSelect">Select</button>
+            <button type="button" class="btn btn-primary btn-block" id="btnUpload">Upload</button>
+        </div>
+    </form>
 </div>
 
 
@@ -65,12 +70,21 @@ if (!is_dir($dir)) {
     mkdir($dir);
 }
 
-$files = glob($dir . 'I_*.txt');
+$files = glob($dir . 'I_*.*');
 $id = count($files);
 
+if ($id > 0) {
+    echo '<div class="container">';
+    echo '<h2 style="text-align: center;">Uploaded Pictures</h2>';
+    foreach ($files as $img) {
+        echo '<img src="' . $img . '" style="margin-left: 0.5%; margin-right: 0.5%; max-width: 9%"/>';
+    }
+    echo '</div>';
+}
+
 if (isset($_POST['img'])) {
-    echo '<script>console.log("Works!");</script>';
-};
+    echo '<script>console.log("whatever");</script>';
+}
 ?>
 
 
@@ -87,8 +101,13 @@ if (isset($_POST['img'])) {
         });
     });
 
-    $('#btnUpload').click(function () {
-        if ($("#saveDelta").is(":enabled")) {
+
+    $(document).ready(function () {
+        $('#imgForm').on('submit',(function(e) {
+            e.preventDefault();
+            //let img = new FormData();
+            //img.append('img', document.getElementById('imgPreview').src);
+
             let img = document.getElementById('imgPreview').src;
 
             $.ajax({
@@ -96,29 +115,30 @@ if (isset($_POST['img'])) {
                 url: 'uploadPicture.php',
                 data: {'img': img},
                 cache: false,
-                contentType: false,
-                processData: false,
+                //contentType: false,
+                //processData: false,
                 success: function () {
-                    console.log('Image successfully transmitted!');
+                    console.log(img);
                 },
                 error: function (e) {
                     console.log(e);
                 }
             });
-        }
-
-
-        // TODO: pass image to php with ajax cause the above doesnt work :(
-
-
+        }));
     });
+
+
+    $('#btnUpload').click(function () {
+        $('#imgForm').submit();
+    });
+
 
     function readURL(input) {
         if (input.files && input.files[0]) {
             let reader = new FileReader();
             reader.onload = function (e) {
                 $('#imgPreview').attr('src', e.target.result);
-            }
+            };
             reader.readAsDataURL(input.files[0]);
         }
     }

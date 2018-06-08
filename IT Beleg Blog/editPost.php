@@ -73,7 +73,7 @@ $id = count($files);
 
 if ($id > 0) {
     echo '<div class="container">';
-    echo '<h2>Posts available for editing:</h2>';
+    echo '<h2 style="text-align: center;">Posts available for editing:</h2>';
     $i = 0;
     foreach ($files as $post) {
         $file = fopen($post, 'r');
@@ -92,7 +92,7 @@ if ($id > 0) {
     echo '</div>';
 } else {
     echo '<div class="container">';
-    echo '<h2>No Posts available!</h2>';
+    echo '<h2 style="text-align: center;">No Posts available!</h2>';
     echo '</div>';
 }
 
