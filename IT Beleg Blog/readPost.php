@@ -40,13 +40,11 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1 id="pageTitle"></h1>
+        <h1 id="post-title"></h1>
     </div>
     <!-- Actual Post -->
     <div class="row">
         <div class="col-sm-8">
-            <h2 id="post-title"></h2>
-            <br>
             <p id="post-content"></p>
 
         </div>
