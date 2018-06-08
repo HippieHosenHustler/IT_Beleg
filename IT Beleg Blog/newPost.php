@@ -35,7 +35,7 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="editPost.php">Edit Post</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -48,10 +48,23 @@
 <div class="container">
 
     <form action="savePost.php" method="post">
-        Titel: <input type="text" name="title"/><br>
+        Titel: <textarea type="text" name="title"></textarea><br>
         Inhalt: <textarea name="content" ></textarea><br>
+        <input type="hidden" id="dateTime" name="dateOfCreation">
         <input type="submit" value="Save">
     </form>
+
+    <script>
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth();
+        let yyyy = today.getFullYear();
+        let hh = today.getHours();
+        let min = today.getMinutes();
+        let ss = today.getSeconds();
+
+        document.getElementById("dateTime").value = yyyy- + "-" + mm + "-" + dd + " " + hh + ":" + min + ":" + ss;
+    </script>
 
     <!-- separator -->
     <div class="col-xs-12" style="height:20px;"></div>
