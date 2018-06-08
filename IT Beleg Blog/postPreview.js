@@ -1,4 +1,3 @@
-//TODO posts are json
 let xhttp;
 xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
