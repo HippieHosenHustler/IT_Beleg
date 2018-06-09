@@ -45,6 +45,7 @@
     $content = $_POST["content"];
     $dateOfCreation = $_POST["dateOfCreation"];
 
+
     $array = array(
         "dateOfCreation" => $dateOfCreation,
         "title" => $title,
@@ -52,9 +53,14 @@
     );
     $jsonFileContent = json_encode($array);
 
-    $postId = count(glob("./Posts/P_*.json"));
+    if (empty($_POST["fileName"])) {
+        $postId = count(glob("./Posts/P_*.json"));
 
-    file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+        file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+    } else {
+        $fileName = $_POST["fileName"];
+        file_put_contents($fileName, $jsonFileContent);
+    }
 
     echo "Post saved!"
     ?>
