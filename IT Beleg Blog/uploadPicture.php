@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- Main Quill library -->
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-    <!-- Theme included stylesheets -->
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-
     <title>Upload Picture</title>
 </head>
 <body>
@@ -45,7 +36,7 @@
 
 
 <div class="container">
-    <form id="imgForm" action="" method="post" enctype="multipart/form-data">
+    <form id="imgForm" action="uploadPicture.php" method="post" enctype="multipart/form-data">
         <div id="image_preview">
             <img id="imgPreview" src="#" alt=""
                  style="display: block; margin-left: auto; margin-right: auto; width: 100%; max-width: 400px;"/>
@@ -63,17 +54,17 @@
 
 
 <?php
-$dir = 'Posts/';
+define('DIR', 'Posts/');
 
-if (!is_dir($dir)) {
+if (!is_dir(DIR)) {
     // dir doesn't exist, make it
-    mkdir($dir);
+    mkdir(DIR);
 }
 
-$files = glob($dir . 'I_*.*');
-$id = count($files);
+$files = glob(DIR . '*-*-* *-*-*.*');
+$i = count($files);
 
-if ($id > 0) {
+if ($i > 0) {
     echo '<div class="container">';
     echo '<h2 style="text-align: center;">Uploaded Pictures</h2>';
     foreach ($files as $img) {
@@ -82,9 +73,41 @@ if ($id > 0) {
     echo '</div>';
 }
 
-if (isset($_POST['img'])) {
-    echo '<script>console.log("whatever");</script>';
+//upload handle
+if (isset($_FILES['img'])) {
+    $img = $_FILES['img'];
+
+    if ($img['size'] > 2097152) {
+        echo '<script>alert("File too large!");</script>';
+        exit;
+    }
+
+    if ($img['error'] !== UPLOAD_ERR_OK) {
+        echo '<script>alert("An error occurred!");</script>';
+        exit;
+    }
+
+    //ensure a safe filename
+    $name = date('Y-m-d H-i-s');
+
+    //preg_replace('/[^A-Z0-9._-]/i', '_', $img['name']);
+    $parts = pathinfo($img['name']);
+    $name = $name . '.' . $parts['extension'];
+
+    // preserve file form temporary directory
+    $success = move_uploaded_file($img['tmp_name'], DIR . $name);
+    if (!$success) {
+        echo '<script>alert(">Unable to save file!");</script>';
+        exit;
+    }
+
+    //set proper permission on the new file
+    chmod(DIR . $name, 0644);
+    header("Refresh:0");
 }
+
+// TODO: maximalgroesze 2mb
+// TODO: jeder thumbnail hat nen loeschbutton und uploaddatum
 ?>
 
 
@@ -99,32 +122,6 @@ if (isset($_POST['img'])) {
             readURL(this);
             $('#btnUpload').prop('disabled', false);
         });
-    });
-
-
-    $(document).ready(function () {
-        $('#imgForm').on('submit',(function(e) {
-            e.preventDefault();
-            //let img = new FormData();
-            //img.append('img', document.getElementById('imgPreview').src);
-
-            let img = document.getElementById('imgPreview').src;
-
-            $.ajax({
-                type: 'POST',
-                url: 'uploadPicture.php',
-                data: {'img': img},
-                cache: false,
-                //contentType: false,
-                //processData: false,
-                success: function () {
-                    console.log(img);
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }));
     });
 
 
