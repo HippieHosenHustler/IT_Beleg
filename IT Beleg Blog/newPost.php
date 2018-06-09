@@ -35,8 +35,8 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="editPost.php">Edit Post</a></li>
-                    <li><a href="uploadPicture.php">Upload Picture</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
+                    <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
         </ul>
@@ -46,85 +46,29 @@
 
 <!-- input form to write new posts -->
 <div class="container">
-    <div id="toolbar"></div>
-    <div id="editor"></div>
+
+    <form action="savePost.php" method="post">
+        Titel: <textarea type="text" name="title"></textarea><br>
+        Inhalt: <textarea name="content" ></textarea><br>
+        <input type="hidden" id="dateTime" name="dateOfCreation">
+        <input type="submit" value="Save">
+    </form>
+
+    <script>
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth();
+        let yyyy = today.getFullYear();
+        let hh = today.getHours();
+        let min = today.getMinutes();
+        let ss = today.getSeconds();
+
+        document.getElementById("dateTime").value = yyyy- + "-" + mm + "-" + dd + " " + hh + ":" + min + ":" + ss;
+    </script>
 
     <!-- separator -->
     <div class="col-xs-12" style="height:20px;"></div>
 
-    <button type="button" class="btn btn-primary btn-md pull-right" id="saveDelta">Post</button>
 </div>
-
-
-<script>
-    // setting up quill editor
-    // define toolbar
-    let toolbarOptions = [
-        [{'font': []}],
-        [{'header': [1, 2, 3, 4, 5, 6, false]}],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{'color': []}, {'background': []}],
-        [{'list': 'ordered'}, {'list': 'bullet'}, {'align': []}],
-        ['link', 'image']
-    ];
-
-    // define other options and set toolbar options
-    let editorOptions = {
-        modules: {
-            toolbar: toolbarOptions
-        },
-        placeholder: 'Write something here...',
-        theme: 'snow'
-    };
-
-    // create editor with the according options from above
-    let quill = new Quill('#editor', editorOptions);
-
-    // "Post"-Button click function
-    $('#saveDelta').click(function () {
-        // get editor content and convert JSON to String
-        window.delta = quill.getContents();
-
-        let JSONString = JSON.stringify(delta);
-
-        // POST ContentString to php via AJAX
-        $.ajax({
-            type: 'POST',
-            url: 'newPost.php',
-            data: {'quillContent': JSONString},
-            success: function () {
-                console.log('JSON object successfully transmitted as string!');
-                // redirect to home
-                window.location.replace("index.php");
-            },
-            error: function (e) {
-                console.log(e.message);
-            }
-        });
-    });
-</script>
-
-
-<!-- php part
- waits for post via ajax
- writes content to file and names it according to current date and time
- -->
-<?php
-$dir = 'Posts/';
-
-if (!is_dir($dir)) {
-    // dir doesn't exist, make it
-    mkdir($dir);
-}
-
-$id = count(glob($dir . 'P_*.txt'));
-
-if (isset($_POST['quillContent'])) {
-    $obj = $_POST['quillContent'];
-    file_put_contents($dir . 'P_' . $id . '.txt', $obj);
-}
-?>
-
-
 </body>
 </html>

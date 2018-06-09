@@ -30,7 +30,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="editPost.php">Edit Post</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
                     <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
@@ -40,15 +40,32 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1 id="pageTitle"></h1>
+        <h1 id="post-title"></h1>
     </div>
     <!-- Actual Post -->
     <div class="row">
         <div class="col-sm-8">
-            <div id="post">
-            </div>
+            <p id="post-content"></p>
 
         </div>
+        <!-- Displays the blog post -->
+        <script>
+            let fileName = localStorage.getItem("fileName");
+
+            let xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let responseTextJson = JSON.parse(this.responseText);
+
+                    document.getElementById("post-title").innerHTML = responseTextJson.post.title;
+                    document.getElementById("post-content").innerHTML = responseTextJson.post.content;
+                }
+            };
+            xhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
+            xhttp.send();
+
+        </script>
 
         <!-- Latest 10 Posts -->
         <div class="col-sm-4">
@@ -79,33 +96,5 @@
 <!-- Fills the list of ten latest posts -->
 <script src="fillLatestPostLinks.js">
 </script>
-<!--script>
-    document.getElementById("post").innerHTML = localStorage.getItem("fileName");
-</script-->
-
-<!-- Displays the blog post -->
-<script>
-    let editorOptions = {
-        theme: 'bubble',
-        readOnly: true,
-        modules: {
-            toolbar: false
-        }
-    };
-    let fileName = "" + localStorage.getItem("fileName");
-
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-      if (this.readyState === 4 && this.status === 200) {
-          let jsonObject = JSON.parse(this.responseText);
-          let quill = new Quill('#post', editorOptions);
-          quill.setContents(jsonObject);
-        }
-    };
-    xmlhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
-    xmlhttp.send();
-</script>
-
-
 </body>
 </html>

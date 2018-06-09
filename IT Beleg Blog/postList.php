@@ -1,5 +1,3 @@
-<!-- page to edit posts -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +23,7 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="postList.php">Edit Blog Post</a>
+            <a class="navbar-brand" href="#">Edit Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -44,31 +42,40 @@
 </nav>
 
 <div class="container">
-    <form action="updatePost.php" method="post">
-        Titel: <textarea id="title" type="text" name="title"></textarea><br>
-        Inhalt: <textarea id="content" name="content" ></textarea><br>
-        <input type="hidden" id="dateTime" name="dateOfCreation">
-        <input type="hidden" id="fileName" name="fileName">
-        <input type="submit" value="Save">
-    </form>
+    <div class="jumbotron">
+        <h1 id="BIG">Posts to edit</h1>
+    </div>
+    <div id="postList">
+
+    </div>
+    <script>
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let responseTextJson = JSON.parse(this.responseText);
+                let size = responseTextJson.post.length;
+                for (let i = 0; i < size ; i++) {
+                     let link = document.createElement("a");
+                     let textNode = document.createTextNode(responseTextJson.post[i].title);
+                     link.appendChild(textNode);
+
+                     link.href="editPost.php";
+                     link.onclick = function () {
+                         localStorage.setItem("fileName", responseTextJson.post[i].fileName)
+                     };
+                     document.getElementById("postList").appendChild(link);
+
+                     let br = document.createElement("br");
+                     document.getElementById("postList").appendChild(br);
+                }
+            }
+        };
+        xmlhttp.open("GET", "getRecentPosts.php", true);
+        xmlhttp.send();
+
+    </script>
 </div>
 
-<script>
-    let fileName = localStorage.getItem("fileName");
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            let jsonObject = JSON.parse(this.responseText);
 
-            document.getElementById("title").innerHTML = jsonObject.post.title;
-            document.getElementById("content").innerHTML = jsonObject.post.content;
-            document.getElementById("dateTime").value = jsonObject.post.dateOfCreation;
-            document.getElementById("fileName").value = fileName;
-        }
-    };
-    xmlhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
-    xmlhttp.send();
-</script>
 
 </body>
-</html>

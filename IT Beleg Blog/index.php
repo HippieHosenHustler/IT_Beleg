@@ -31,8 +31,8 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="editPost.php">Edit Post</a></li>
-                    <li><a href="uploadPicture.php">Upload Picture</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
+                    <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
         </ul>
@@ -42,16 +42,37 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1>WELCOME TO OUR BLOG!</h1>
+        <h1 id="BIG">WELCOME TO OUR BLOG!</h1>
         <p>Take a look around, we're sure you'll find something you'll like!</p>
     </div>
     <div class="row">
         <div class="col-sm-8">
             <h2>Look at our three latest posts!<br><small>They are very good.</small></h2>
 
-            <div id="long_post_0" class="longPost"></div>
-            <div id="long_post_1" class="longPost"></div>
-            <div id="long_post_2" class="longPost"></div>
+            <div class="longPost">
+                <h2 id="preview-title-0"></h2>
+                <br>
+                <p id="preview-text-0"></p>
+                <br>
+                <a id="preview-link-0">read more</a>
+            </div>
+            <div class="longPost">
+                <h2 id="preview-title-1"></h2>
+                <br>
+                <p id="preview-text-1"></p>
+                <br>
+                <a id="preview-link-1">read more</a>
+            </div>
+            <div class="longPost">
+                <h2 id="preview-title-2"></h2>
+                <br>
+                <p id="preview-text-2"></p>
+                <br>
+                <a id="preview-link-2">read more</a>
+            </div>
+
+            <!-- Fills the three latest posts -->
+            <script src="postPreview.js"></script>
 
         </div>
         <div class="col-sm-4">
@@ -76,49 +97,11 @@
             <a id="recent-post-link-8" href="#"></a>
             <br>
             <a id="recent-post-link-9" href="#"></a>
-
+            <!-- Fills the list of ten latest posts -->
+            <script src="fillLatestPostLinks.js"></script>
         </div>
     </div>
 </div>
-<!-- Fills the list of ten latest posts -->
-<script src="fillLatestPostLinks.js"></script>
-
-<!-- Fills the three latest posts -->
-<!-- TODO click to go to reader -->
-<script>
-    let editorOptions = {
-      theme: 'bubble',
-      readOnly: true,
-      modules: {
-          toolbar: false
-      }
-    };
-
-    for (let i = 0; i < 3; i++) {
-        loadDoc(i);
-    }
-
-    function loadDoc(postNumber) {
-        let xhttp;
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let jsonObject = JSON.parse(this.responseText);
-                let quill = new Quill('#long_post_' + postNumber, editorOptions);
-                quill.setContents(jsonObject);
-
-                let contentLength = quill.getLength();
-                quill.deleteText(500, contentLength - 500);
-                quill.insertText(quill.getLength() - 1, "...");
-
-            }
-        };
-        xhttp.open("GET", "get-post-data.php?q=" + postNumber, true);
-        xhttp.send();
-    }
-
-</script>
-
 
 </body>
 </html>
