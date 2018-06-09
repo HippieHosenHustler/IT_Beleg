@@ -41,11 +41,13 @@
 </nav>
 <div class="container">
     <?php
+    //TODO post id in file
     $title = $_POST["title"];
     $content = $_POST["content"];
     $dateOfCreation = $_POST["dateOfCreation"];
 
     $array = array(
+            //TODO NAN
         "dateOfCreation" => $dateOfCreation,
         "title" => $title,
         "content" => $content

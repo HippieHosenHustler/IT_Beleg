@@ -23,4 +23,4 @@ for ($i = 0; $i < count($files); $i++) {
     $returnArray["post"][] = $jsonArray[$i];
 }
 
-echo json_encode($returnArray);
+echo json_encode($jsonArray);

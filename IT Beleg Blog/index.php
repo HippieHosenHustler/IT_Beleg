@@ -46,59 +46,62 @@
         <p>Take a look around, we're sure you'll find something you'll like!</p>
     </div>
     <div class="row">
-        <div class="col-sm-8">
-            <h2>Look at our three latest posts!<br><small>They are very good.</small></h2>
 
-            <div class="longPost">
-                <h2 id="preview-title-0"></h2>
-                <br>
-                <p id="preview-text-0"></p>
-                <br>
-                <a id="preview-link-0">read more</a>
-            </div>
-            <div class="longPost">
-                <h2 id="preview-title-1"></h2>
-                <br>
-                <p id="preview-text-1"></p>
-                <br>
-                <a id="preview-link-1">read more</a>
-            </div>
-            <div class="longPost">
-                <h2 id="preview-title-2"></h2>
-                <br>
-                <p id="preview-text-2"></p>
-                <br>
-                <a id="preview-link-2">read more</a>
-            </div>
+            <?php
+            $files = glob("./Posts/P_*.json");
 
-            <!-- Fills the three latest posts -->
-            <script src="postPreview.js"></script>
+            $jsonArray = array();
 
-        </div>
-        <div class="col-sm-4">
-            <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
+            foreach ($files as $file) {
+                $fileContent = fread(fopen($file, "r"), filesize($file));
+                $jsonContent = json_decode($fileContent, true);
+                $jsonContent["fileName"] = $file;
 
-            <a id="recent-post-link-0" href="#"></a>
-            <br>
-            <a id="recent-post-link-1" href="#"></a>
-            <br>
-            <a id="recent-post-link-2" href="#"></a>
-            <br>
-            <a id="recent-post-link-3" href="#"></a>
-            <br>
-            <a id="recent-post-link-4" href="#"></a>
-            <br>
-            <a id="recent-post-link-5" href="#"></a>
-            <br>
-            <a id="recent-post-link-6" href="#"></a>
-            <br>
-            <a id="recent-post-link-7" href="#"></a>
-            <br>
-            <a id="recent-post-link-8" href="#"></a>
-            <br>
-            <a id="recent-post-link-9" href="#"></a>
-            <!-- Fills the list of ten latest posts -->
-            <script src="fillLatestPostLinks.js"></script>
+                array_push($jsonArray, $jsonContent);
+            }
+
+            foreach ($jsonArray as $key => $row) {
+                $date[$key] = $row["dateOfCreation"];
+            }
+
+            array_multisort($date, SORT_DESC, $jsonArray);
+
+            $size = count($jsonArray);
+            if ($size >= 3) {
+                $previewSize = 3;
+            } else {
+                $previewSize = $size;
+            }
+            echo "<div class='col-sm-8'><h2>Look at our three latest posts!<br><small>They are very good.</small></h2>";
+
+            for ($i = 0; $i < $previewSize; $i++) {
+                echo "<div class='longPost'><h2>";
+                echo $jsonArray[$i]["title"];
+                echo "</h2><br><p>";
+                echo $jsonArray[$i]["content"];
+                echo "</h2><br><a href='readPost.php?id=$i'>read more</a></div>";
+            }
+
+            echo "</div>";
+
+            echo "<div class='com-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
+
+            if ($size >= 10) {
+                $linkSize = 10;
+            } else {
+                $linkSize = $size;
+            }
+
+            for ($j = 0; $j < $linkSize; $j++) {
+                echo "<a href='readPost.php?id=$j'>";
+                echo $jsonArray[$j]["title"];
+                echo "</a><br>";
+            }
+
+            echo "</div>"
+
+            ?>
+
         </div>
     </div>
 </div>
