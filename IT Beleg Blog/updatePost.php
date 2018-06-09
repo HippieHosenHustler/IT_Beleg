@@ -1,5 +1,3 @@
-<!-- page to edit posts -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,15 +15,14 @@
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
 
-    <title>Edit Post</title>
+    <title>Post saved.</title>
 </head>
 <body>
-
 <!-- Navbar at the top of the page -->
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="postList.php">Edit Blog Post</a>
+            <a class="navbar-brand" href="#">New Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -35,34 +32,30 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="newPost.php">New Post</a></li>
-                    <li><a href="uploadPicture.php">Upload Picture</a></li>
+                    <li><a href="postList.php">Edit Post</a></li>
+                    <li><a href="#">Upload Picture</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 </nav>
-<div class="jumbotron">
-    <h1 id="BIG">Edit Post</h1>
-</div>
-
 <div class="container">
     <?php
-    $id = $_GET["id"];
-    $fileName = "./Posts/P_".$id.".json";
-    $file = fopen($fileName, "r");
-    $fileContent = fread($file, filesize($fileName));
-    $jsonContent = json_decode($fileContent, true);
+    $title = $_POST["title"];
+    $content = $_POST["content"];
+    $dateOfCreation = $_POST["dateOfCreation"];
+    $fileName = $_POST["fileName"];
 
-    echo "<form action='savePost.php' method='post'>";
-    echo "Titel: <textarea title='title' id='title' name='title'>".$jsonContent["title"]."</textarea><br>";
-    echo "Inhalt: <textarea title='content' id='content' name='content'>".$jsonContent['content']."</textarea><br>";
-    echo "<input type='hidden' name='dateOfCreation' value='".$jsonContent['dateOfCreation']."'>";
-    echo "<input type='hidden' id='fileName' name='fileName' value='$fileName'>";
-    echo "<input type='submit' value='Save'>";
+    $array = array(
+        "dateOfCreation" => $dateOfCreation,
+        "title" => $title,
+        "content" => $content
+    );
+    $jsonFileContent = json_encode($array);
 
+    file_put_contents($fileName, $jsonFileContent);
+
+    echo "Post saved!"
     ?>
 </div>
-
 </body>
-</html>
