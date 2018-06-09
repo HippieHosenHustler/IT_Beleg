@@ -48,8 +48,8 @@
 <div class="container">
 
     <form action="savePost.php" method="post">
-        Titel: <textarea type="text" name="title"></textarea><br>
-        Inhalt: <textarea name="content" ></textarea><br>
+        Titel: <textarea title="title" name="title"></textarea><br>
+        Inhalt: <textarea title="content" name="content" ></textarea><br>
 
         <?php
         $timestamp = time();

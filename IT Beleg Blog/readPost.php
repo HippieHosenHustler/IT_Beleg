@@ -41,11 +41,9 @@
 <div class="container">
 
     <?php
-    $id = $_GET["id"];
-    $fileName = "./Posts/P_".$id.".json";
+    $fileName = $_GET["fileName"];
     $file = fopen($fileName, "r");
     $fileContent = fread($file, filesize($fileName));
-    $jsonArray = array();
     $jsonContent = json_decode($fileContent, true);
 
     //Header
@@ -87,7 +85,7 @@
     }
 
     for ($j = 0; $j < $linkSize; $j++) {
-        echo "<a href='readPost.php?id=$j'>";
+        echo "<a href='readPost.php?fileName=".$jsonArray[$j]['fileName']."'>";
         echo $jsonArray[$j]["title"];
         echo "</a><br>";
         echo $jsonArray[$j]["dateOfCreation"];

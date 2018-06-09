@@ -46,34 +46,26 @@
         <h1 id="BIG">Posts to edit</h1>
     </div>
     <div id="postList">
+        <?php
+        $files = glob("./Posts/P_*.json");
+
+        $jsonArray = array();
+
+        foreach ($files as $file) {
+            $fileContent = fread(fopen($file, "r"), filesize($file));
+            $jsonContent = json_decode($fileContent, true);
+
+            array_push($jsonArray, $jsonContent);
+        }
+
+        $size = count($jsonArray);
+
+        for ($i = 0; $i < $size; $i++) {
+            echo "<a href='editPost.php?id=$i'>".$jsonArray[$i]['title']."</a><br>";
+        }
+        ?>
 
     </div>
-    <script>
-        let xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                let responseTextJson = JSON.parse(this.responseText);
-                let size = responseTextJson.post.length;
-                for (let i = 0; i < size ; i++) {
-                     let link = document.createElement("a");
-                     let textNode = document.createTextNode(responseTextJson.post[i].title);
-                     link.appendChild(textNode);
-
-                     link.href="editPost.php";
-                     link.onclick = function () {
-                         localStorage.setItem("fileName", responseTextJson.post[i].fileName)
-                     };
-                     document.getElementById("postList").appendChild(link);
-
-                     let br = document.createElement("br");
-                     document.getElementById("postList").appendChild(br);
-                }
-            }
-        };
-        xmlhttp.open("GET", "getRecentPosts.php", true);
-        xmlhttp.send();
-
-    </script>
 </div>
 
 

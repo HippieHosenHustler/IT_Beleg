@@ -80,9 +80,9 @@
                 echo "<div class='longPost'><h2>";
                 echo $jsonArray[$i]["title"];
                 echo "</h2><br><p>";
-                //TODO 500 chars, ...
-                echo $jsonArray[$i]["content"];
-                echo "</h2><br><a href='readPost.php?id=$i'>read more</a></div>";
+                $substring = substr($jsonArray[$i]["content"], 0, 500);
+                echo $substring."...";
+                echo "</h2><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div>";
             }
 
             echo "</div>";
@@ -96,7 +96,7 @@
             }
 
             for ($j = 0; $j < $linkSize; $j++) {
-                echo "<a href='readPost.php?id=$j'>";
+                echo "<a href='readPost.php?fileName=".$jsonArray[$j]['fileName']."'>";
                 echo $jsonArray[$j]["title"];
                 echo "</a><br>";
                 echo $jsonArray[$j]["dateOfCreation"];

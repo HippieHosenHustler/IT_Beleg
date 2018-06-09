@@ -41,22 +41,26 @@
 </nav>
 <div class="container">
     <?php
-    //TODO post id in file
     $title = $_POST["title"];
     $content = $_POST["content"];
     $dateOfCreation = $_POST["dateOfCreation"];
 
+
     $array = array(
-            //TODO NAN
         "dateOfCreation" => $dateOfCreation,
         "title" => $title,
         "content" => $content
     );
     $jsonFileContent = json_encode($array);
 
-    $postId = count(glob("./Posts/P_*.json"));
+    if (empty($_POST["fileName"])) {
+        $postId = count(glob("./Posts/P_*.json"));
 
-    file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+        file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
+    } else {
+        $fileName = $_POST["fileName"];
+        file_put_contents($fileName, $jsonFileContent);
+    }
 
     echo "Post saved!"
     ?>
