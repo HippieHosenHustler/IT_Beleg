@@ -9,13 +9,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- Main Quill library -->
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-    <!-- Theme included stylesheets -->
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+    <!-- Markdown editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
     <title>Create New Post</title>
 </head>
@@ -49,15 +45,17 @@
 
     <form action="savePost.php" method="post">
         Titel: <textarea title="title" name="title"></textarea><br>
-        Inhalt: <textarea title="content" name="content" ></textarea><br>
+        Inhalt: <textarea id="content" title="content" name="content" ></textarea><br>
 
         <?php
         $timestamp = time();
         $date = date("d.m.Y - H:i:s", $timestamp);
-        echo "<input type='hidden' name='dateOfCreation' value='".$date."'>"
+        echo "<input type='hidden' name='dateOfCreation' value='".$date."'>";
+        echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
         ?>
         <input type="submit" value="Save">
     </form>
+
 
 
 

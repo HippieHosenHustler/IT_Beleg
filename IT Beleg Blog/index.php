@@ -10,10 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- Quill -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- markdown -->
 
     <title>Blog von Tom und Edwin</title>
 </head>
@@ -73,6 +70,7 @@
 
             array_multisort($date, SORT_DESC, $jsonArray);
 
+
             echo "<div class='col-sm-8'><h2>Look at our three latest posts!<br><small>They are very good.</small></h2>";
 
             for ($i = $pgNr * 3; $i < ( $pgNr*3 ) + 3; $i++) {
@@ -80,10 +78,17 @@
                     echo "<div class='longPost'><h2>";
                     echo $jsonArray[$i]["title"];
                     echo "<br><small>".$jsonArray[$i]['dateOfCreation']."</small>";
-                    echo "</h2><br><p>";
+                    echo "</h2><br><p id='content".$i."'>";
+
                     $substring = substr($jsonArray[$i]["content"], 0, 500);
-                    echo $substring."...";
-                    echo "</h2><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div>";
+
+                    require_once 'Michelf/Markdown.inc.php';
+
+                    $parser = new \Michelf\Markdown();
+                    $parser ->fn_id_prefix = "post22-";
+                    $myHtml = $parser->transform($substring);
+                    echo $myHtml;
+                    echo "</p><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div>";
                 }
             }
 
@@ -122,7 +127,6 @@
 
             ?>
 
-        </div>
     </div>
 </div>
 

@@ -54,7 +54,14 @@
     echo "</small></h1></div>";
 
     echo "<div class='row'><div class='col-sm-8'><p>";
-    echo $jsonContent["content"];
+
+    require_once 'Michelf/Markdown.inc.php';
+
+    $parser = new \Michelf\Markdown();
+    $parser ->fn_id_prefix = "post22-";
+    $myHtml = $parser->transform($jsonContent["content"]);
+    echo $myHtml;
+
     echo "</p></div>";
 
     echo "<div class='col-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
