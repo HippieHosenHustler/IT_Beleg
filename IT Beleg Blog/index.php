@@ -48,6 +48,8 @@
     <div class="row">
 
             <?php
+
+            // TODO prev / next buttons
             $files = glob("./Posts/P_*.json");
 
             $jsonArray = array();
@@ -78,6 +80,7 @@
                 echo "<div class='longPost'><h2>";
                 echo $jsonArray[$i]["title"];
                 echo "</h2><br><p>";
+                //TODO 500 chars, ...
                 echo $jsonArray[$i]["content"];
                 echo "</h2><br><a href='readPost.php?id=$i'>read more</a></div>";
             }
@@ -96,6 +99,8 @@
                 echo "<a href='readPost.php?id=$j'>";
                 echo $jsonArray[$j]["title"];
                 echo "</a><br>";
+                echo $jsonArray[$j]["dateOfCreation"];
+                echo "<br><br>";
             }
 
             echo "</div>"

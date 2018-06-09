@@ -39,62 +39,63 @@
 </nav>
 
 <div class="container">
-    <div class="jumbotron">
-        <h1 id="post-title"></h1>
-    </div>
-    <!-- Actual Post -->
-    <div class="row">
-        <div class="col-sm-8">
-            <p id="post-content"></p>
 
-        </div>
-        <!-- Displays the blog post -->
-        <script>
-            let fileName = localStorage.getItem("fileName");
+    <?php
+    $id = $_GET["id"];
+    $fileName = "./Posts/P_".$id.".json";
+    $file = fopen($fileName, "r");
+    $fileContent = fread($file, filesize($fileName));
+    $jsonArray = array();
+    $jsonContent = json_decode($fileContent, true);
 
-            let xhttp;
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    let responseTextJson = JSON.parse(this.responseText);
+    //Header
+    echo "<div class='jumbotron'><h1>";
+    echo $jsonContent["title"];
+    echo "<br><small>";
+    echo $jsonContent["dateOfCreation"];
+    echo "</small></h1></div>";
 
-                    document.getElementById("post-title").innerHTML = responseTextJson.post.title;
-                    document.getElementById("post-content").innerHTML = responseTextJson.post.content;
-                }
-            };
-            xhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
-            xhttp.send();
+    echo "<div class='row'><div class='col-sm-8'><p>";
+    echo $jsonContent["content"];
+    echo "</p></div>";
 
-        </script>
+    echo "<div class='col-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
 
-        <!-- Latest 10 Posts -->
-        <div class="col-sm-4">
-            <h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>
+    $files = glob("./Posts/P_*.json");
 
-            <a id="recent-post-link-0" href="#"></a>
-            <br>
-            <a id="recent-post-link-1" href="#"></a>
-            <br>
-            <a id="recent-post-link-2" href="#"></a>
-            <br>
-            <a id="recent-post-link-3" href="#"></a>
-            <br>
-            <a id="recent-post-link-4" href="#"></a>
-            <br>
-            <a id="recent-post-link-5" href="#"></a>
-            <br>
-            <a id="recent-post-link-6" href="#"></a>
-            <br>
-            <a id="recent-post-link-7" href="#"></a>
-            <br>
-            <a id="recent-post-link-8" href="#"></a>
-            <br>
-            <a id="recent-post-link-9" href="#"></a>
-        </div>
-    </div>
+    $jsonArray = array();
+
+    foreach ($files as $file) {
+        $fileContent = fread(fopen($file, "r"), filesize($file));
+        $jsonContent = json_decode($fileContent, true);
+        $jsonContent["fileName"] = $file;
+
+        array_push($jsonArray, $jsonContent);
+    }
+
+    foreach ($jsonArray as $key => $row) {
+        $date[$key] = $row["dateOfCreation"];
+    }
+    array_multisort($date, SORT_DESC, $jsonArray);
+
+    $size = count($jsonArray);
+
+    if ($size >= 10) {
+        $linkSize = 10;
+    } else {
+        $linkSize = $size;
+    }
+
+    for ($j = 0; $j < $linkSize; $j++) {
+        echo "<a href='readPost.php?id=$j'>";
+        echo $jsonArray[$j]["title"];
+        echo "</a><br>";
+        echo $jsonArray[$j]["dateOfCreation"];
+        echo "<br><br>";
+    }
+
+    echo "</div></div>"
+    ?>
 </div>
-<!-- Fills the list of ten latest posts -->
-<script src="fillLatestPostLinks.js">
-</script>
 </body>
 </html>
