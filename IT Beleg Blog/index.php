@@ -49,7 +49,12 @@
 
             <?php
 
-            // TODO prev / next buttons
+            if (empty($_GET["pgNr"])) {
+                $pgNr = 0;
+            } else {
+                $pgNr = $_GET["pgNr"];
+            }
+
             $files = glob("./Posts/P_*.json");
 
             $jsonArray = array();
@@ -68,21 +73,31 @@
 
             array_multisort($date, SORT_DESC, $jsonArray);
 
-            $size = count($jsonArray);
-            if ($size >= 3) {
-                $previewSize = 3;
-            } else {
-                $previewSize = $size;
-            }
             echo "<div class='col-sm-8'><h2>Look at our three latest posts!<br><small>They are very good.</small></h2>";
 
-            for ($i = 0; $i < $previewSize; $i++) {
-                echo "<div class='longPost'><h2>";
-                echo $jsonArray[$i]["title"];
-                echo "</h2><br><p>";
-                $substring = substr($jsonArray[$i]["content"], 0, 500);
-                echo $substring."...";
-                echo "</h2><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div>";
+            for ($i = $pgNr * 3; $i < ( $pgNr*3 ) + 3; $i++) {
+                if (!empty($jsonArray[$i])){
+                    echo "<div class='longPost'><h2>";
+                    echo $jsonArray[$i]["title"];
+                    echo "<br><small>".$jsonArray[$i]['dateOfCreation']."</small>";
+                    echo "</h2><br><p>";
+                    $substring = substr($jsonArray[$i]["content"], 0, 500);
+                    echo $substring."...";
+                    echo "</h2><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div>";
+                }
+            }
+
+            $size = count($jsonArray);
+
+            if ($pgNr != 0) {
+                $newer = $pgNr -1;
+                echo "<form action='index.php' method='get'><input type='hidden' name='pgNr' value='$newer'><input type='submit' value='Newer Posts'></form>";
+            }
+
+            $maxPgNr = ceil($size / 3) - 1;
+            if ($pgNr < $maxPgNr) {
+                $older = $pgNr + 1;
+                echo "<form action='index.php' method='get'><input type='hidden' name='pgNr' value='$older'><input type='submit' value='Older Posts'></form>";
             }
 
             echo "</div>";
@@ -103,7 +118,7 @@
                 echo "<br><br>";
             }
 
-            echo "</div>"
+            echo "</div>";
 
             ?>
 
