@@ -42,33 +42,27 @@
         </ul>
     </div>
 </nav>
-
-<div class="container">
-    <form action="updatePost.php" method="post">
-        Titel: <textarea id="title" type="text" name="title"></textarea><br>
-        Inhalt: <textarea id="content" name="content" ></textarea><br>
-        <input type="hidden" id="dateTime" name="dateOfCreation">
-        <input type="hidden" id="fileName" name="fileName">
-        <input type="submit" value="Save">
-    </form>
+<div class="jumbotron">
+    <h1 id="BIG">Edit Post</h1>
 </div>
 
-<script>
-    let fileName = localStorage.getItem("fileName");
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            let jsonObject = JSON.parse(this.responseText);
+<div class="container">
+    <?php
+    $id = $_GET["id"];
+    $fileName = "./Posts/P_".$id.".json";
+    $file = fopen($fileName, "r");
+    $fileContent = fread($file, filesize($fileName));
+    $jsonContent = json_decode($fileContent, true);
 
-            document.getElementById("title").innerHTML = jsonObject.post.title;
-            document.getElementById("content").innerHTML = jsonObject.post.content;
-            document.getElementById("dateTime").value = jsonObject.post.dateOfCreation;
-            document.getElementById("fileName").value = fileName;
-        }
-    };
-    xmlhttp.open("GET", "get-reader-data.php?q=" + fileName, true);
-    xmlhttp.send();
-</script>
+    echo "<form action='savePost.php' method='post'>";
+    echo "Titel: <textarea title='title' id='title' name='title'>".$jsonContent["title"]."</textarea><br>";
+    echo "Inhalt: <textarea title='content' id='content' name='content'>".$jsonContent['content']."</textarea><br>";
+    echo "<input type='hidden' name='dateOfCreation' value='".$jsonContent['dateOfCreation']."'>";
+    echo "<input type='hidden' id='fileName' name='fileName' value='$fileName'>";
+    echo "<input type='submit' value='Save'>";
+
+    ?>
+</div>
 
 </body>
 </html>

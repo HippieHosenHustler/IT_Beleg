@@ -48,23 +48,18 @@
 <div class="container">
 
     <form action="savePost.php" method="post">
-        Titel: <textarea type="text" name="title"></textarea><br>
-        Inhalt: <textarea name="content" ></textarea><br>
-        <input type="hidden" id="dateTime" name="dateOfCreation">
+        Titel: <textarea title="title" name="title"></textarea><br>
+        Inhalt: <textarea title="content" name="content" ></textarea><br>
+
+        <?php
+        $timestamp = time();
+        $date = date("d.m.Y - H:i", $timestamp);
+        echo "<input type='hidden' name='dateOfCreation' value='".$date."'>"
+        ?>
         <input type="submit" value="Save">
     </form>
 
-    <script>
-        let today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth();
-        let yyyy = today.getFullYear();
-        let hh = today.getHours();
-        let min = today.getMinutes();
-        let ss = today.getSeconds();
 
-        document.getElementById("dateTime").value = yyyy- + "-" + mm + "-" + dd + " " + hh + ":" + min + ":" + ss;
-    </script>
 
     <!-- separator -->
     <div class="col-xs-12" style="height:20px;"></div>
