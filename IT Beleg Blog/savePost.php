@@ -22,7 +22,8 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">New Blog Post</a>
+            <a class="navbar-brand" href="newPost.php">New Blog Post</a>
+            <a class="navbar-brand" href="postList.php">Edit Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>

@@ -53,7 +53,7 @@
 
         <?php
         $timestamp = time();
-        $date = date("d.m.Y - H:i", $timestamp);
+        $date = date("d.m.Y - H:i:s", $timestamp);
         echo "<input type='hidden' name='dateOfCreation' value='".$date."'>"
         ?>
         <input type="submit" value="Save">
