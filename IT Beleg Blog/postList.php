@@ -30,7 +30,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
@@ -61,9 +61,40 @@
         $size = count($jsonArray);
 
         for ($i = 0; $i < $size; $i++) {
-            echo "<a href='editPost.php?id=$i'>".$jsonArray[$i]['title']."</a><br>";
+            echo "<div class='row'>";
+
+            echo "<div class='col-sm-4'>";
+            echo $jsonArray[$i]['title']."<br><br>";
+            echo "</div>";
+
+            echo "<div class='col-sm-4'>";
+            echo $jsonArray[$i]["dateOfCreation"];
+            echo "</div>";
+
+            echo "<div class='col-sm-2'>";
+            echo "<form action='editPost.php' method='get'>";
+            //TODO go by actual post id
+            echo "<input type='hidden' name='id' value='".$i."'>";
+            echo "<input type='submit' class='btn-primary' value='Edit'>";
+            echo "</form><br>";
+            echo "</div>";
+
+            //TODO actually delete, confirm first
+            //TODO go by actual post id
+            echo "<div class='col-sm-2'>";
+            echo "<form method='get'>";
+            echo "<input type='hidden' name='id' value='".$i."'>";
+            echo "<input type='submit' class='btn-warning' value='Delete'>";
+            echo "</form><br>";
+            echo "</div>";
+
+            echo "</div>";
+
+
         }
+
         ?>
+
 
     </div>
 </div>
