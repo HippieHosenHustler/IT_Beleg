@@ -46,18 +46,18 @@
     <!-- A form that contains fields for the Title and Content of a post -->
     <form action="savePost.php" method="post">
         <div class="form-group">
-            <label for="title">Titel</label>
+            <label for="title">Title</label>
             <input type="text" title="title" id="title" name="title" class="form-control">
         </div>
         <div class="form-group">
-            <label for="content">Inhalt</label>
+            <label for="content">Content</label>
             <textarea id="content" title="content" name="content"></textarea>
         </div>
 
         <?php
         // A hidden input passing the date of Creation
         $timestamp = time();
-        $date = date("d.m.Y - H:i:s", $timestamp);
+        $date = date("Y-m-d H:i:s", $timestamp);
         echo "<input type='hidden' name='dateOfCreation' value='".$date."'>";
 
         // changes the textArea for the content to a markdown editor
