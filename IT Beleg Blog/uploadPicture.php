@@ -62,14 +62,38 @@ if (!is_dir(DIR)) {
 }
 
 $files = glob(DIR . '*-*-* *-*-*.*');
-$i = count($files);
+$fCount = count($files);
 
-if ($i > 0) {
+if ($fCount > 0) {
     echo '<div class="container">';
     echo '<h2 style="text-align: center;">Uploaded Pictures</h2>';
-    foreach ($files as $img) {
-        echo '<img src="' . $img . '" style="margin-left: 0.5%; margin-right: 0.5%; max-width: 9%"/>';
+
+    for ($j = $fCount - 1; $j >= 0; $j = $j - 6) {
+        echo '<div class="row">';
+
+        for ($i = $j; $i >= $j - 5; $i--) {
+            if (isset($files[$i])) {
+                echo '<div class="col-sm-2">';
+                    echo '<div class="row">';
+                        echo '<img src="' . $files[$i] . '" style="max-width: 90%"/>';
+                    echo '</div>';
+                    echo '<div class="row" style="vertical-align: bottom;">';
+                        echo '<div class="col-sm-9">';
+                            echo '<p>something longer</p>';
+                        echo '</div>';
+                        echo '<div class="col-sm-3">';
+                            echo '<button type="button" class="btn btn-danger btn-xs">x</button>';
+                        echo '</div>';
+                    echo '</div>';
+                echo '</div>';
+            }
+        }
+
+        echo '<div class="col-xs-12" style="height:20px;"></div>';
+
+        echo '</div>';
     }
+
     echo '</div>';
 }
 
