@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -24,7 +23,7 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="newPost.php">New Post</a></li>
@@ -69,7 +68,9 @@
                 $date[$key] = $row["dateOfCreation"];
             }
 
-            array_multisort($date, SORT_DESC, $jsonArray);
+            if (count($jsonArray) != 0) {
+                array_multisort($date, SORT_DESC, $jsonArray);
+            }
 
 
             echo "<div class='col-sm-8'>";

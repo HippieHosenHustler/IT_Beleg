@@ -30,7 +30,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="postList.php">Edit Post</a></li>
@@ -45,6 +45,7 @@
     $title = $_POST["title"];
     $content = $_POST["content"];
     $dateOfCreation = $_POST["dateOfCreation"];
+    //TODO post id in file
 
 
     $array = array(
@@ -56,6 +57,10 @@
 
     if (empty($_POST["fileName"])) {
         $postId = count(glob("./Posts/P_*.json"));
+
+        while (file_exists("./Posts/P_".$postId.".json")) {
+            $postId++;
+        }
 
         file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
     } else {
