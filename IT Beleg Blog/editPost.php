@@ -51,8 +51,13 @@
     $jsonContent = json_decode($fileContent, true);
 
     echo "<form action='savePost.php' method='post'>";
-    echo "Titel: <textarea title='title' id='title' name='title'>".$jsonContent["title"]."</textarea><br>";
-    echo "Inhalt: <textarea title='content' id='content' name='content'>".$jsonContent['content']."</textarea><br>";
+    echo "<div class='form-group'>";
+    echo "<label for='title'>Titel</label>";
+    echo "<input type='text' title='title' id='title' name='title' class='form-control' value='".$jsonContent['title']."'>";
+    echo "</div><div class='form-group'>";
+    echo "<label for='content'>Inhalt</label>";
+    echo "<textarea title='content' id='content' name='content'>".$jsonContent['content']."</textarea><br>";
+    echo "</div>";
     echo "<input type='hidden' name='dateOfCreation' value='".$jsonContent['dateOfCreation']."'>";
     echo "<input type='hidden' id='fileName' name='fileName' value='$fileName'>";
     echo "<input type='submit' value='Save'>";
