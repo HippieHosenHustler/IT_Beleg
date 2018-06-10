@@ -69,7 +69,7 @@
     echo "<input type='hidden' id='fileName' name='fileName' value='$fileName'>";
     // passes on the original post id, as this should not change
     echo "<input type='hidden' id='postId' name='postId' value='".$jsonContent['postId']."'>";
-    echo "<input type='submit' value='Save'>";
+    echo "<input type='submit' class='btn-primary' value='Save'>";
     echo "</form>"
 
     ?>
