@@ -21,7 +21,7 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="postList.php">Edit Blog Post</a>
+            <a class="navbar-brand" href="postList.php">Edit or Delete Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -44,8 +44,7 @@
 
 <div class="container">
     <?php
-    $id = $_GET["id"];
-    $fileName = "./Posts/P_".$id.".json";
+    $fileName = $_POST["fileName"];
     $file = fopen($fileName, "r");
     $fileContent = fread($file, filesize($fileName));
     $jsonContent = json_decode($fileContent, true);
@@ -60,6 +59,7 @@
     echo "</div>";
     echo "<input type='hidden' name='dateOfCreation' value='".$jsonContent['dateOfCreation']."'>";
     echo "<input type='hidden' id='fileName' name='fileName' value='$fileName'>";
+    echo "<input type='hidden' id='postId' name='postId' value='".$jsonContent['postId']."'>";
     echo "<input type='submit' value='Save'>";
 
     ?>
