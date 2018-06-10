@@ -62,14 +62,38 @@ if (!is_dir(DIR)) {
 }
 
 $files = glob(DIR . '*-*-* *-*-*.*');
-$i = count($files);
+$fCount = count($files);
 
-if ($i > 0) {
-    echo '<div class="container">';
+if ($fCount > 0) {
+    echo '<div class="container" id="deleteContainer">';
     echo '<h2 style="text-align: center;">Uploaded Pictures</h2>';
-    foreach ($files as $img) {
-        echo '<img src="' . $img . '" style="margin-left: 0.5%; margin-right: 0.5%; max-width: 9%"/>';
+
+    for ($j = $fCount - 1; $j >= 0; $j = $j - 6) {
+        echo '<div class="row">';
+
+        for ($i = $j; $i >= $j - 5; $i--) {
+            if (isset($files[$i])) {
+                echo '<div class="col-sm-2">';
+                echo '<div class="row">';
+                echo '<img src="' . $files[$i] . '" style="object-fit: cover; width: 180px; height: 180px"/>';
+                echo '</div>';
+                echo '<div class="col-xs-12" style="height:20px;"></div>';
+                echo '<div class="row" style="vertical-align: bottom;">';
+                echo '<div class="col-xs-9">';
+                echo '<p style="font-size: 12px;">' . date("Y-m-d H:i:s", filectime($files[$i])) . '</p>';
+                echo '</div>';
+                echo '<div class="col-xs-3">';
+                echo '<button type="button" class="btn btn-danger btn-xs" id="' . $files[$i] . '">x</button>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
+        }
+
+        echo '<div class="col-xs-12" style="height:20px;"></div>';
+        echo '</div>';
     }
+
     echo '</div>';
 }
 
@@ -87,14 +111,10 @@ if (isset($_FILES['img'])) {
         exit;
     }
 
-    //ensure a safe filename
     $name = date('Y-m-d H-i-s');
-
-    //preg_replace('/[^A-Z0-9._-]/i', '_', $img['name']);
     $parts = pathinfo($img['name']);
     $name = $name . '.' . $parts['extension'];
 
-    // preserve file form temporary directory
     $success = move_uploaded_file($img['tmp_name'], DIR . $name);
     if (!$success) {
         echo '<script>alert(">Unable to save file!");</script>';
@@ -106,8 +126,15 @@ if (isset($_FILES['img'])) {
     header("Refresh:0");
 }
 
-// TODO: maximalgroesze 2mb
-// TODO: jeder thumbnail hat nen loeschbutton und uploaddatum
+//delete handle
+if (isset($_POST['img'])) {
+    $img = $_POST['img'];
+    echo '<script>console.log('.$img.');</script>';
+    //$d = delete($img);
+    if ($d){
+        echo '<script>console.log("Image deleted!");</script>';
+    }
+}
 ?>
 
 
@@ -124,11 +151,25 @@ if (isset($_FILES['img'])) {
         });
     });
 
-
     $('#btnUpload').click(function () {
         $('#imgForm').submit();
     });
 
+    $('#deleteContainer').on('click', 'button', function () {
+        let img = this.id;
+        $.ajax({
+            type: 'POST',
+            url: 'uploadPicture.php',
+            data: {img: img},
+            cache: false,
+            success: function () {
+                console.log(img);
+            },
+            error: function (e) {
+                console.log(e.message);
+            }
+        });
+    });
 
     function readURL(input) {
         if (input.files && input.files[0]) {
