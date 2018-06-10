@@ -57,6 +57,10 @@
     if (empty($_POST["fileName"])) {
         $postId = count(glob("./Posts/P_*.json"));
 
+        while (file_exists("./Posts/P_".$postId.".json")) {
+            $postId++;
+        }
+
         file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
     } else {
         $fileName = $_POST["fileName"];

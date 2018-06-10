@@ -78,6 +78,7 @@
             echo "</form><br>";
             echo "</div>";
 
+            //TODO actually delete, confirm first
             echo "<div class='col-sm-2'>";
             echo "<form method='get'>";
             echo "<input type='hidden' name='id' value='".$i."'>";
