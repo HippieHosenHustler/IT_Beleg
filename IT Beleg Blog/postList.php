@@ -23,7 +23,7 @@
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Edit Blog Post</a>
+            <a class="navbar-brand" href="#">Edit or Delete Blog Post</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="index.php">Home</a></li>
@@ -51,9 +51,11 @@
 
         $jsonArray = array();
 
+
         foreach ($files as $file) {
             $fileContent = fread(fopen($file, "r"), filesize($file));
             $jsonContent = json_decode($fileContent, true);
+            $jsonContent["fileName"] = $file;
 
             array_push($jsonArray, $jsonContent);
         }
@@ -72,18 +74,16 @@
             echo "</div>";
 
             echo "<div class='col-sm-2'>";
-            echo "<form action='editPost.php' method='get'>";
-            //TODO go by actual post id
-            echo "<input type='hidden' name='id' value='".$i."'>";
+
+            echo "<form action='editPost.php' method='post'>";
+            echo "<input type='hidden' name='fileName' value='".$jsonArray[$i]['fileName']."'>";
             echo "<input type='submit' class='btn-primary' value='Edit'>";
             echo "</form><br>";
             echo "</div>";
 
-            //TODO actually delete, confirm first
-            //TODO go by actual post id
             echo "<div class='col-sm-2'>";
-            echo "<form method='get'>";
-            echo "<input type='hidden' name='id' value='".$i."'>";
+            echo "<form method='post' action='confirmDelete.php'>";
+            echo "<input type='hidden' name='fileName' value='".$jsonArray[$i]['fileName']."'>";
             echo "<input type='submit' class='btn-warning' value='Delete'>";
             echo "</form><br>";
             echo "</div>";
