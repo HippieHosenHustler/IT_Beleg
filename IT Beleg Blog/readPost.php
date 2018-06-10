@@ -135,7 +135,7 @@
         </form>
 
     </div>
-    echo '<div class="col-xs-12" style="height:20px;"></div>';
+    <div class="col-xs-12" style="height:20px;"></div>
 
     <?php
     $cFiles = glob('./Posts/C_*.json');
