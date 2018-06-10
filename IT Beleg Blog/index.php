@@ -94,13 +94,11 @@
                 }
             }
 
+            echo "</div>";
+
+
             $size = count($jsonArray);
 
-
-
-
-
-            echo "</div>";
 
             echo "<div class='com-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
 

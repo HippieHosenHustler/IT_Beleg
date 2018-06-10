@@ -73,9 +73,9 @@ if ($fCount > 0) {
 
         for ($i = $j; $i >= $j - 5; $i--) {
             if (isset($files[$i])) {
-                echo '<div class="col-sm-2">';
+                echo '<div class="col-lg-2 col-md-4 col-sm-6">';
                 echo '<div class="row">';
-                echo '<img src="' . $files[$i] . '" style="object-fit: cover; width: 180px; height: 180px"/>';
+                echo '<img src="' . $files[$i] . '" class="img-responsive center-block" style="object-fit: cover; width: 180px; height: 180px; margin-left: auto; margin-right: auto;"/>';
                 echo '</div>';
                 echo '<div class="col-xs-12" style="height:20px;"></div>';
                 echo '<div class="row" style="vertical-align: bottom;">';
