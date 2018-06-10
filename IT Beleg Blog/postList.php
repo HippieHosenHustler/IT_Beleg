@@ -61,9 +61,37 @@
         $size = count($jsonArray);
 
         for ($i = 0; $i < $size; $i++) {
-            echo "<a href='editPost.php?id=$i'>".$jsonArray[$i]['title']."</a><br>";
+            echo "<div class='row'>";
+
+            echo "<div class='col-sm-4'>";
+            echo $jsonArray[$i]['title']."<br><br>";
+            echo "</div>";
+
+            echo "<div class='col-sm-4'>";
+            echo $jsonArray[$i]["dateOfCreation"];
+            echo "</div>";
+
+            echo "<div class='col-sm-2'>";
+            echo "<form action='editPost.php' method='get'>";
+            echo "<input type='hidden' name='id' value='".$i."'>";
+            echo "<input type='submit' class='btn-primary' value='Edit'>";
+            echo "</form><br>";
+            echo "</div>";
+
+            echo "<div class='col-sm-2'>";
+            echo "<form method='get'>";
+            echo "<input type='hidden' name='id' value='".$i."'>";
+            echo "<input type='submit' class='btn-warning' value='Delete'>";
+            echo "</form><br>";
+            echo "</div>";
+
+            echo "</div>";
+
+
         }
+
         ?>
+
 
     </div>
 </div>
