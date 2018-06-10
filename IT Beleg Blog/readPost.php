@@ -38,7 +38,6 @@
 </nav>
 
 <div class="container">
-
     <?php
     $fileName = $_GET["fileName"];
     $file = fopen($fileName, "r");
@@ -57,7 +56,7 @@
     require_once 'Michelf/Markdown.inc.php';
 
     $parser = new \Michelf\Markdown();
-    $parser ->fn_id_prefix = "post22-";
+    $parser->fn_id_prefix = "post22-";
     $myHtml = $parser->transform($jsonContent["content"]);
     echo $myHtml;
 
@@ -80,7 +79,7 @@
     foreach ($jsonArray as $key => $row) {
         $date[$key] = $row["dateOfCreation"];
     }
-    if (!empty($jsonArray)){
+    if (!empty($jsonArray)) {
         array_multisort($date, SORT_DESC, $jsonArray);
     }
 
@@ -93,7 +92,7 @@
     }
 
     for ($j = 0; $j < $linkSize; $j++) {
-        echo "<a href='readPost.php?fileName=".$jsonArray[$j]['fileName']."'>";
+        echo "<a href='readPost.php?fileName=" . $jsonArray[$j]['fileName'] . "'>";
         echo $jsonArray[$j]["title"];
         echo "</a><br>";
         echo $jsonArray[$j]["dateOfCreation"];
@@ -101,6 +100,40 @@
     }
 
     echo "</div></div>"
+    ?>
+
+    <form action="saveComment.php" method="post">
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" title="content" name="content"></textarea>
+        </div>
+
+        <?php
+        $timestamp = time();
+        $date = date("Y-m-d H:i:s", $timestamp);
+        echo "<input type='hidden' name='parentPost' value='" . $jsonContent['fileName'] . "'>";
+        echo "<input type='hidden' name='dateOfCreation' value='" . $date . "'>";
+        echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
+        ?>
+        <input type="submit" class="btn-primary" value="Save">
+    </form>
+
+    <?php
+    $cFiles = glob('./Posts/C_*.json');
+    $commentArray = Array();
+
+    foreach ($cFiles as $cFile){
+        $cFileContent = fread(fopen($cFile, "r"), filesize($file));
+        $commentContent = json_decode($cFileContent, true);
+        if ($commentContent['ParentPost'] == $jsonContent['fileName']){
+            $commentContent["fileName"] = $file;
+            array_push($commentArray, $commentContent);
+        }
+    }
+
+    foreach ($commentArray as $comment){
+        // output goes here
+    }
     ?>
 </div>
 </body>

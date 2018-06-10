@@ -42,32 +42,24 @@
 
 <!-- input form to write new posts -->
 <div class="container">
-
     <form action="savePost.php" method="post">
         <div class="form-group">
-            <label for="title">Titel</label>
+            <label for="title">Title</label>
             <input type="text" title="title" id="title" name="title" class="form-control">
         </div>
         <div class="form-group">
-            <label for="content">Inhalt</label>
+            <label for="content">Content</label>
             <textarea id="content" title="content" name="content"></textarea>
         </div>
 
         <?php
         $timestamp = time();
-        $date = date("d.m.Y - H:i:s", $timestamp);
+        $date = date("Y-m-d H:i:s", $timestamp);
         echo "<input type='hidden' name='dateOfCreation' value='".$date."'>";
         echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
         ?>
         <input type="submit" class="btn-primary" value="Save">
     </form>
-
-
-
-
-    <!-- separator -->
-    <div class="col-xs-12" style="height:20px;"></div>
-
 </div>
 </body>
 </html>
