@@ -102,21 +102,38 @@
     echo "</div></div>"
     ?>
 
-    <form action="saveComment.php" method="post">
-        <div class="form-group">
-            <label for="content">Content</label>
-            <textarea id="content" title="content" name="content"></textarea>
-        </div>
+    <div class="col-sm-8">
+        <form action="saveComment.php" method="post">
 
-        <?php
-        $timestamp = time();
-        $date = date("Y-m-d H:i:s", $timestamp);
-        echo "<input type='hidden' name='parentPost' value='" . $jsonContent['fileName'] . "'>";
-        echo "<input type='hidden' name='dateOfCreation' value='" . $date . "'>";
-        echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
-        ?>
-        <input type="submit" class="btn-primary" value="Save">
-    </form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" title="name" name="name"/>
+            </div>
+
+            <div class="form-group">
+                <label for="mail">E-Mail</label>
+                <input type="email" class="form-control" id="mail" title="mail" name="mail"/>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" title="content" name="content"></textarea>
+            </div>
+
+
+
+            <?php
+            $timestamp = time();
+            $date = date("Y-m-d H:i:s", $timestamp);
+            echo "<input type='hidden' name='parentPost' value='" . $fileName . "'>";
+            echo "<input type='hidden' name='dateOfCreation' value='" . $date . "'>";
+            echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
+            ?>
+            <input type="submit" class="btn-primary" value="Save">
+        </form>
+
+    </div>
+    echo '<div class="col-xs-12" style="height:20px;"></div>';
 
     <?php
     $cFiles = glob('./Posts/C_*.json');
@@ -125,15 +142,28 @@
     foreach ($cFiles as $cFile){
         $cFileContent = fread(fopen($cFile, "r"), filesize($file));
         $commentContent = json_decode($cFileContent, true);
-        if ($commentContent['ParentPost'] == $jsonContent['fileName']){
+        if ($commentContent['ParentPost'] == $fileName){
             $commentContent["fileName"] = $file;
             array_push($commentArray, $commentContent);
         }
     }
 
+    echo "<div class='col-sm-8'>";
+
     foreach ($commentArray as $comment){
         // output goes here
+        echo "<div class='row'>";
+        echo "<div class='panel panel-default'><div class='panel-heading'>";
+
+        echo "<div class='col-sm-8'>".$comment['name']."</div>";
+        echo "<div class='col-sm-4'>".$comment['dateOfCreation']."</div><br>";
+
+        echo "</div><div class='panel-body'><p>";
+        echo $comment["content"];
+        echo "</p></div></div></div>";
     }
+
+    echo "</div>";
     ?>
 </div>
 </body>
