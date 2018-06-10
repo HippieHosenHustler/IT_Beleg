@@ -39,6 +39,8 @@
 
     <div class="row">
         <div class="col-sm-6">
+            <!-- This form contains a button that confirms the deletion of the post by passing on the information to
+            deletePost.php -->
             <form method="post" action="deletePost.php">
                 <?php
                 $fileName = $_POST["fileName"];
@@ -48,6 +50,7 @@
                 <input type="submit" class="btn-warning" value="Yes, delete">
             </form>
         </div>
+        <!-- This form contains a button that cancels deletion of the post and redirects back to the post list -->
         <div class="col-sm-6">
             <form action="postList.php">
                 <input type="submit" class="btn-success" value="No, better not">
