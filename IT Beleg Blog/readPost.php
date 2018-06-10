@@ -53,7 +53,7 @@
     echo $jsonContent["dateOfCreation"];
     echo "</small></h1></div>";
 
-    echo "<div class='row'><div class='col-sm-8'><p>";
+    echo "<div class='row'><div class='col-sm-8'><div class='panel panel-primary'><div class='panel-body'><p>";
 
     require_once 'Michelf/Markdown.inc.php';
 
@@ -62,7 +62,7 @@
     $myHtml = $parser->transform($jsonContent["content"]);
     echo $myHtml;
 
-    echo "</p></div>";
+    echo "</p></div></div></div>";
 
     echo "<div class='col-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
 
