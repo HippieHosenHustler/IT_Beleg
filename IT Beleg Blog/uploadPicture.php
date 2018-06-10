@@ -194,8 +194,10 @@ if (isset($_FILES['img'])) {
     }
 
     // set proper permission on the new file and refresh page
+    // the refresh does not seem to work consistently as there is a problem with the header() method that originates from using echos
+    // we did not have the time to solve this problem left as this requires lots of restructuring and workarounds
     chmod(DIR . $name, 0644);
-    header("Refresh:0");
+    header('Refresh:0');
 }
 
 // delete handle
