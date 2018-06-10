@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <title>Post saved.</title>
+    <title>Delete Post?</title>
 </head>
 <body>
 <!-- Navbar at the top of the page -->
@@ -33,40 +33,27 @@
     </div>
 </nav>
 <div class="container">
-    <?php
-    $title = $_POST["title"];
-    $content = $_POST["content"];
-    $dateOfCreation = $_POST["dateOfCreation"];
+    <div class="jumbotron">
+        <h1>Are you sure you want to delete?</h1>
+    </div>
 
+    <div class="row">
+        <div class="col-sm-6">
+            <form method="post" action="deletePost.php">
+                <?php
+                $fileName = $_POST["fileName"];
 
-    $array = array(
-        "dateOfCreation" => $dateOfCreation,
-        "title" => $title,
-        "content" => $content
-    );
+                echo "<input type='hidden' name='fileName' value='$fileName'>";
+                ?>
+                <input type="submit" class="btn-warning" value="Yes, delete">
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <form action="postList.php">
+                <input type="submit" class="btn-success" value="No, better not">
+            </form>
+        </div>
+    </div>
 
-    if (empty($_POST["fileName"])) {
-        $postId = count(glob("./Posts/P_*.json"));
-
-        while (file_exists("./Posts/P_".$postId.".json")) {
-            $postId++;
-        }
-        $array["postId"] = $postId;
-
-        $jsonFileContent = json_encode($array);
-
-        file_put_contents("./Posts/P_".$postId.".json", $jsonFileContent);
-    } else {
-        $fileName = $_POST["fileName"];
-        $postId = $_POST["postId"];
-        $array["postId"] = $postId;
-
-        $jsonFileContent = json_encode($array);
-
-        file_put_contents($fileName, $jsonFileContent);
-    }
-
-    echo "Post saved!"
-    ?>
 </div>
 </body>
