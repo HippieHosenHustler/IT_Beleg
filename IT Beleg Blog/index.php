@@ -9,9 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- markdown -->
-
-    <title>Blog von Tom und Edwin</title>
+    <title>Tom's and Edwin's Blog</title>
 </head>
 <body>
 
@@ -46,16 +44,19 @@
 
             echo "<div class='row'>";
 
+            // if the page number is not given, it is set to 0.
             if (empty($_GET["pgNr"])) {
                 $pgNr = 0;
             } else {
                 $pgNr = $_GET["pgNr"];
             }
 
+            // Reads all the post files into an array
             $files = glob("./Posts/P_*.json");
 
             $jsonArray = array();
 
+            // parses the content of each file into an array, adds fileName to it, and then adds it to an array containing every post
             foreach ($files as $file) {
                 $fileContent = fread(fopen($file, "r"), filesize($file));
                 $jsonContent = json_decode($fileContent, true);
@@ -64,28 +65,33 @@
                 array_push($jsonArray, $jsonContent);
             }
 
+            // unless there are no posts at all, they are sorted by age.
             foreach ($jsonArray as $key => $row) {
                 $date[$key] = $row["dateOfCreation"];
             }
-
             if (count($jsonArray) != 0) {
                 array_multisort($date, SORT_DESC, $jsonArray);
             }
 
 
+            //The three previews of the posts
             echo "<div class='col-sm-8'>";
 
+            //This chooses which posts are being displayed
             for ($i = $pgNr * 3; $i < ( $pgNr*3 ) + 3; $i++) {
                 if (!empty($jsonArray[$i])){
+                    // Creates a panes for each post, the heading contains the title and date of creation
                     echo "<div class='panel panel-primary'><div class='panel-heading'><h2>";
                     echo $jsonArray[$i]["title"];
                     echo "</h2><br>".$jsonArray[$i]['dateOfCreation'];
+
+                    //The body contains the first 500 characters of the post, as well as a link to its full form
                     echo "</div><div class='panel-body'><p id='content".$i."'>";
 
                     $substring = substr($jsonArray[$i]["content"], 0, 500);
 
+                    // parses the markdown
                     require_once 'Michelf/Markdown.inc.php';
-
                     $parser = new \Michelf\Markdown();
                     $parser ->fn_id_prefix = "post22-";
                     $myHtml = $parser->transform($substring);
@@ -93,21 +99,20 @@
                     echo "</p><br><a href='readPost.php?fileName=".$jsonArray[$i]['fileName']."'>read more</a></div></div>";
                 }
             }
-
             echo "</div>";
-
 
             $size = count($jsonArray);
 
-
             echo "<div class='com-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
 
+            // in case there are less than 10 posts
             if ($size >= 10) {
                 $linkSize = 10;
             } else {
                 $linkSize = $size;
             }
 
+            // creates up to ten links to posts and their date of creation
             for ($j = 0; $j < $linkSize; $j++) {
                 echo "<a href='readPost.php?fileName=".$jsonArray[$j]['fileName']."'>";
                 echo $jsonArray[$j]["title"];
@@ -118,6 +123,7 @@
 
             echo "</div></div>";
 
+            // Generates the "Newer Posts" button, given that there are newer posts to display
             echo "<div class='row'><div class='col-sm-4'>";
             if ($pgNr != 0) {
                 $newer = $pgNr -1;
@@ -125,6 +131,8 @@
                         <input type='submit' class='btn-primary' value='Newer Posts'></form>";
             }
             echo "</div><div class='col-sm-4'>";
+
+            // Generates the "Older Posts" button, given that there are older posts to display
             $maxPgNr = ceil($size / 3) - 1;
             if ($pgNr < $maxPgNr) {
                 $older = $pgNr + 1;

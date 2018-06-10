@@ -42,6 +42,8 @@
 
 <!-- input form to write new posts -->
 <div class="container">
+
+    <!-- A form that contains fields for the Title and Content of a post -->
     <form action="savePost.php" method="post">
         <div class="form-group">
             <label for="title">Title</label>
@@ -53,13 +55,21 @@
         </div>
 
         <?php
+        // A hidden input passing the date of Creation
         $timestamp = time();
         $date = date("Y-m-d H:i:s", $timestamp);
         echo "<input type='hidden' name='dateOfCreation' value='".$date."'>";
+
+        // changes the textArea for the content to a markdown editor
         echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
         ?>
+
+        <!-- separator -->
+        <div class="col-xs-12" style="height:20px;"></div>
         <input type="submit" class="btn-primary" value="Save">
     </form>
+
+
 </div>
 </body>
 </html>

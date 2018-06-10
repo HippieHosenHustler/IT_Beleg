@@ -1,3 +1,4 @@
+<!-- This page displays a post in full length -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <title id="pageTitle">Blog von Tom und Edwin</title>
+    <title id="pageTitle">Tom's and Edwin's Blog</title>
+
 </head>
 <body>
 <!-- Navbar at the top of the page -->
@@ -45,10 +47,11 @@
     echo $jsonContent["dateOfCreation"];
     echo "</small></h1></div>";
 
+    // Content of the post
     echo "<div class='row'><div class='col-sm-8'><div class='panel panel-primary'><div class='panel-body'><p>";
 
+    // parses markdown
     require_once 'Michelf/Markdown.inc.php';
-
     $parser = new \Michelf\Markdown();
     $parser->fn_id_prefix = "post22-";
     $myHtml = $parser->transform($jsonContent["content"]);
@@ -56,12 +59,15 @@
 
     echo "</p></div></div></div>";
 
+    //List of ten latest posts
     echo "<div class='col-sm-4'><h2>Look at this list of posts!<br><small>They are all terrific.</small></h2>";
 
+    // reads every post file into an array
     $files = glob("./Posts/P_*.json");
 
     $jsonArray = array();
 
+    // parses json for every file, adds fileName, adds everything to array
     foreach ($files as $file) {
         $fileContent = fread(fopen($file, "r"), filesize($file));
         $jsonContent = json_decode($fileContent, true);
@@ -70,6 +76,7 @@
         array_push($jsonArray, $jsonContent);
     }
 
+    //Unless there are no posts, sorts by date
     foreach ($jsonArray as $key => $row) {
         $date[$key] = $row["dateOfCreation"];
     }
@@ -77,14 +84,15 @@
         array_multisort($date, SORT_DESC, $jsonArray);
     }
 
+    // in case there are less than 10 posts
     $size = count($jsonArray);
-
     if ($size >= 10) {
         $linkSize = 10;
     } else {
         $linkSize = $size;
     }
 
+    // generates a link to the ten latest posts and displays their date
     for ($j = 0; $j < $linkSize; $j++) {
         echo "<a href='readPost.php?fileName=" . $jsonArray[$j]['fileName'] . "'>";
         echo $jsonArray[$j]["title"];

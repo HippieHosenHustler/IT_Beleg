@@ -1,3 +1,4 @@
+<!-- This page contains a list of all the posts and the options to edit or delete them -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,11 +40,13 @@
     </div>
     <div id="postList">
         <?php
+        // reads all the post files into an array
         $files = glob("./Posts/P_*.json");
 
         $jsonArray = array();
 
 
+        // parses the json, adds file name, attaches everything to an array containing all the posts
         foreach ($files as $file) {
             $fileContent = fread(fopen($file, "r"), filesize($file));
             $jsonContent = json_decode($fileContent, true);
@@ -54,35 +57,36 @@
 
         $size = count($jsonArray);
 
-        for ($i = 0; $i < $size; $i++) {
+        // displays a list of every post, containg title, date, and options to edit and delete
+        foreach ($jsonArray as $item) {
             echo "<div class='row'>";
 
             echo "<div class='col-sm-4'>";
-            echo $jsonArray[$i]['title']."<br><br>";
+            echo $item['title']."<br><br>";
             echo "</div>";
 
             echo "<div class='col-sm-4'>";
-            echo $jsonArray[$i]["dateOfCreation"];
+            echo $item["dateOfCreation"];
             echo "</div>";
 
             echo "<div class='col-sm-2'>";
 
+            // Generates a button to edit the post
             echo "<form action='editPost.php' method='post'>";
-            echo "<input type='hidden' name='fileName' value='".$jsonArray[$i]['fileName']."'>";
+            echo "<input type='hidden' name='fileName' value='".$item['fileName']."'>";
             echo "<input type='submit' class='btn-primary' value='Edit'>";
             echo "</form><br>";
             echo "</div>";
 
+            // Generates a button to delete the post
             echo "<div class='col-sm-2'>";
             echo "<form method='post' action='confirmDelete.php'>";
-            echo "<input type='hidden' name='fileName' value='".$jsonArray[$i]['fileName']."'>";
+            echo "<input type='hidden' name='fileName' value='".$item['fileName']."'>";
             echo "<input type='submit' class='btn-warning' value='Delete'>";
             echo "</form><br>";
             echo "</div>";
 
             echo "</div>";
-
-
         }
 
         ?>
