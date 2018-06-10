@@ -44,8 +44,14 @@
 <div class="container">
 
     <form action="savePost.php" method="post">
-        Titel: <textarea title="title" name="title"></textarea><br>
-        Inhalt: <textarea id="content" title="content" name="content" ></textarea><br>
+        <div class="form-group">
+            <label for="title">Titel</label>
+            <input type="text" title="title" id="title" name="title" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="content">Inhalt</label>
+            <textarea id="content" title="content" name="content"></textarea>
+        </div>
 
         <?php
         $timestamp = time();
@@ -53,7 +59,7 @@
         echo "<input type='hidden' name='dateOfCreation' value='".$date."'>";
         echo "<script>let simpleMDE = new SimpleMDE({element: document.getElementById('content')})</script>";
         ?>
-        <input type="submit" value="Save">
+        <input type="submit" class="btn-primary" value="Save">
     </form>
 
 
