@@ -73,12 +73,14 @@
 
             echo "<div class='col-sm-2'>";
             echo "<form action='editPost.php' method='get'>";
+            //TODO go by actual post id
             echo "<input type='hidden' name='id' value='".$i."'>";
             echo "<input type='submit' class='btn-primary' value='Edit'>";
             echo "</form><br>";
             echo "</div>";
 
             //TODO actually delete, confirm first
+            //TODO go by actual post id
             echo "<div class='col-sm-2'>";
             echo "<form method='get'>";
             echo "<input type='hidden' name='id' value='".$i."'>";

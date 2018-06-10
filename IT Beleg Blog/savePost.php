@@ -45,6 +45,7 @@
     $title = $_POST["title"];
     $content = $_POST["content"];
     $dateOfCreation = $_POST["dateOfCreation"];
+    //TODO post id in file
 
 
     $array = array(
